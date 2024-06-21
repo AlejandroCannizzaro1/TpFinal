@@ -49,8 +49,8 @@ public class ClienteRepository implements Repository <Cliente> {
     }
 
     @Override
-    public void actualizar(String id, Cliente obj) {
-        Cliente clienteAactualizar = this.consultar(id);
+    public void actualizar(String dni, Cliente obj) {
+        Cliente clienteAactualizar = this.consultar(dni);
 
         if (clienteAactualizar != null) {
             this.listaClientes.remove(clienteAactualizar);

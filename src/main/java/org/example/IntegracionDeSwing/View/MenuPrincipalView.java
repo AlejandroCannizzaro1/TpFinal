@@ -6,7 +6,6 @@ public class MenuPrincipalView extends JFrame {
 
     private JButton btnGestionClientes;
     private JButton btnGestionPeliculas;
-    private JButton btnGestionSalas;
     private JButton btnGestionReservas;
 
     public MenuPrincipalView() {
@@ -19,7 +18,8 @@ public class MenuPrincipalView extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Centra la ventana principal en la pantalla
-        setLayout(new GridLayout(4, 1, 0, 20)); // GridLayout para alinear verticalmente con espacio entre componentes
+        setLayout(new GridLayout(4, 1, 0, 20));
+        // GridLayout para alinear verticalmente con espacio entre componentes
 
         btnGestionClientes = new JButton("Gestión de Clientes");
         add(btnGestionClientes);

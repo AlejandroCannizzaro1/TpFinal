@@ -12,6 +12,7 @@ import org.example.Reserva.View.ReservaView;
 import org.example.Sala.Controller.SalaController;
 import org.example.Sala.Model.Entity.Sala;
 
+import javax.swing.*;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -65,7 +66,7 @@ public class ReservaController {
         this.peliculaController = peliculaController;
     }
 
-    public void generarReserva(){
+ /*   public void generarReserva(){
         String dni = clienteController.getClienteView().validarDni(); // busco cliente x dni
         Cliente clienteEncontrado = null;
         boolean ok = false;
@@ -101,5 +102,5 @@ public class ReservaController {
         Reserva reservaNueva = reservaView.crearReserva(clienteEncontrado, peliEncontrada, sala); // instancio la reserva nueva con los datos
 
         reservaRepository.agregarReserva(reservaNueva.getId(), reservaNueva); // guardo la reserva en el repo
-    }
+    }*/
 }

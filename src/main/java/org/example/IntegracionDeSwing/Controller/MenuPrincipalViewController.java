@@ -1,4 +1,9 @@
-package org.example.IntegracionDeSwing.View;
+package org.example.IntegracionDeSwing.Controller;
+
+import org.example.IntegracionDeSwing.View.GestionClientesView;
+import org.example.IntegracionDeSwing.View.GestionPeliculasView;
+import org.example.IntegracionDeSwing.View.GestionReservasView;
+import org.example.IntegracionDeSwing.View.MenuPrincipalView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +23,8 @@ public class MenuPrincipalViewController {
         public void actionPerformed(ActionEvent e) {
             GestionClientesView gestionClientesView = new GestionClientesView();
             gestionClientesView.setVisible(true);
+            GestionClientesViewController gestionClientesViewController = new GestionClientesViewController(gestionClientesView);
+
         }
     }
 
@@ -27,7 +34,6 @@ public class MenuPrincipalViewController {
             gestionPeliculasView.setVisible(true);
         }
     }
-
 
 
     class GestionReservasListener implements ActionListener {

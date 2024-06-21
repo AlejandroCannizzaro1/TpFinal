@@ -60,7 +60,7 @@ public class Validar {
     }
 
     public String letras(String mensaje) throws Excepciones{
-        System.out.print(mensaje);
+        System.out.println(mensaje);
         this.cadena = scanner.nextLine().trim();
 
         if (this.cadena.isEmpty()) {
@@ -75,7 +75,7 @@ public class Validar {
     }
 
     public Integer numerosInt(String mensaje) throws Excepciones {
-        System.out.print(mensaje);
+        System.out.println(mensaje);
 
         if (!scanner.hasNextInt()) {
             scanner.nextLine();
@@ -89,7 +89,7 @@ public class Validar {
     }
 
     public String numerosString(String mensaje) throws Excepciones {
-        System.out.print(mensaje);
+        System.out.println(mensaje);
         this.cadena = scanner.nextLine();
 
         if (this.cadena.isEmpty()) {
@@ -99,6 +99,17 @@ public class Validar {
         if (!this.cadena.matches("\\d+")){
             throw new Excepciones("Ingrese solo números...");
         }
+        return this.cadena;
+    }
+
+    public String campoVacio(String mensaje) throws Excepciones{
+        System.out.println(mensaje);
+        this.cadena = scanner.nextLine().trim();
+
+        if (this.cadena.isEmpty()) {
+            throw new Excepciones("El campo no puede estar vacio...");
+        }
+
         return this.cadena;
     }
 

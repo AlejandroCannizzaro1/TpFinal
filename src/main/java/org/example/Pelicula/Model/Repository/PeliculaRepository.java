@@ -9,7 +9,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class PeliculaRepository<T extends Pelicula> implements Repository<T> {
+public class PeliculaRepository implements Repository<Pelicula> {
     private ArrayList<Pelicula> listaPeliculas;
     private static final String FILE_PATH = "src/main/resources/peliculas.json";
     private Gson gson = new Gson();
@@ -25,7 +25,7 @@ public class PeliculaRepository<T extends Pelicula> implements Repository<T> {
     }
 
     public PeliculaRepository() {
-        this.listaPeliculas = new ArrayList<>();
+        this.loadPeliculas();
     }
 
     //-------------------------------------------------- JSON ---------------------------------------------------------//
@@ -57,38 +57,34 @@ public class PeliculaRepository<T extends Pelicula> implements Repository<T> {
 
 
     @Override
-    public void registrar(T obj) {
+    public void registrar(Pelicula obj) {
         listaPeliculas.add(obj);
         savePeliculas();
     }
 
     @Override
-    public T consultar(String titulo) {
-        for (Pelicula pelicula : this.listaPeliculas) {
-            if (pelicula.getTitulo().equals(titulo)) {
-                return (T) pelicula;
+    public void actualizar(String id, Pelicula obj) {
+        Pelicula peliculaAactualizar = this.consultar(id);
+        int pos = listaPeliculas.indexOf(peliculaAactualizar);
+        this.listaPeliculas.set(pos, obj);
+        savePeliculas();
+    }
+
+    @Override
+    public Pelicula consultar(String id) {
+        for (Pelicula unaPelicula : this.listaPeliculas) {
+            if (unaPelicula.getTitulo().equals(id)) {
+                return unaPelicula;
             }
         }
         return null;
     }
 
-    public void actualizar(int pos, Pelicula pelicula) {
-        this.listaPeliculas.set(pos, pelicula);
+    @Override
+    public void eliminar(String id) {
+        this.listaPeliculas.remove(this.consultar(id));
         savePeliculas();
     }
 
-    public void eliminar(Pelicula pelicula) {
-        this.listaPeliculas.remove(pelicula);
-        savePeliculas();
-    }
 
-    @Override
-    public void eliminar(String id) { // no lo utilizo
-
-    }
-
-    @Override
-    public void actualizar(String id, T obj) { // no lo utilizo
-
-    }
 }
