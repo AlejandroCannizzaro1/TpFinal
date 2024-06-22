@@ -1,27 +1,35 @@
 package org.example.Pelicula.Controller;
 
-import org.example.Cliente.Model.Entity.Cliente;
-import org.example.IntegracionDeSwing.View.GestionPeliculasView;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Pelicula.Model.Repository.PeliculaRepository;
 import org.example.Pelicula.View.PeliculaView;
+import org.example.Sala.Controller.SalaController;
 
-import javax.swing.*;
 import java.util.Date;
 
 public class PeliculaController {
-    PeliculaView peliculaView;
-    PeliculaRepository peliculaRepository;
-GestionPeliculasView gestionPeliculasView = new GestionPeliculasView();
+    private PeliculaView peliculaView;
+    private PeliculaRepository peliculaRepository;
+    private SalaController salaController;
+
 
     //---------------------------------------- CONSTRUCTOR GETTER SETTER -----------------------------------------------//
-    public PeliculaController(PeliculaView peliculaView, PeliculaRepository peliculaRepository) {
+    public PeliculaController(PeliculaView peliculaView, PeliculaRepository peliculaRepository, SalaController salaController) {
         this.peliculaView = peliculaView;
         this.peliculaRepository = peliculaRepository;
+        this.salaController = salaController;
     }
 
     public PeliculaView getPeliculaView() {
         return peliculaView;
+    }
+
+    public SalaController getSalaController() {
+        return salaController;
+    }
+
+    public void setSalaController(SalaController salaController) {
+        this.salaController = salaController;
     }
 
     public void setPeliculaView(PeliculaView peliculaView) {
@@ -38,11 +46,9 @@ GestionPeliculasView gestionPeliculasView = new GestionPeliculasView();
 
     //-------------------------------------------------METODOS----------------------------------------------------------//
 
-
     public void cargarPeliculaManual(){
-        peliculaRepository.registrar(peliculaView.crearPelicula(gestionPeliculasView));
+        peliculaRepository.registrar(peliculaView.crearPelicula());
     }
-
     public void mostrarListPeliculas(){
         for (Object pelicula : getPeliculaRepository().getListaPeliculas()) {
             Pelicula pelicula1 = (Pelicula) pelicula;
@@ -51,7 +57,7 @@ GestionPeliculasView gestionPeliculasView = new GestionPeliculasView();
     }
 
     public void buscarPelicula() {
-        Pelicula unaPelicula = peliculaRepository.consultar(peliculaView.pedirTitulo(gestionPeliculasView));
+        Pelicula unaPelicula = peliculaRepository.consultar(peliculaView.pedirTitulo());
         if (unaPelicula != null) {
             peliculaView.verPelicula(unaPelicula);
         }
@@ -59,22 +65,22 @@ GestionPeliculasView gestionPeliculasView = new GestionPeliculasView();
 
     public void actualizarPelicula(){
 
-        Pelicula peliculaAactualizar = peliculaRepository.consultar(peliculaView.pedirTitulo(gestionPeliculasView));
+        Pelicula peliculaAactualizar = peliculaRepository.consultar(peliculaView.pedirTitulo());
 
         if ( peliculaAactualizar != null) {
 
-            peliculaRepository.actualizar(peliculaAactualizar.getTitulo(), peliculaView.crearPelicula(gestionPeliculasView));
+            peliculaRepository.actualizar(peliculaAactualizar.getTitulo(), peliculaView.crearPelicula());
             System.out.println("La Actualizacion fue exitosa!");
 
         }
         else {
-            System.out.println("El libro ingresado no existe!");
+            System.out.println("La Pelicula ingresado no existe!");
         }
     }
 
     public void eliminarPelicula(){
-        peliculaRepository.eliminar(peliculaView.pedirTitulo(gestionPeliculasView));
-        System.out.println("El Libro se elimino con exito!");
+        peliculaRepository.eliminar(peliculaView.pedirTitulo());
+        System.out.println("La Pelicula se elimino con exito!");
 
     }
 
@@ -86,6 +92,4 @@ GestionPeliculasView gestionPeliculasView = new GestionPeliculasView();
             }
         }
     }
-
-
 }

@@ -25,4 +25,22 @@ public class SalaRepository {
     public void addSala(Sala sala){
         listaSalas.add(sala);
     }
+
+    public Sala buscarDisponible(){
+        for (Sala sala : this.listaSalas) {
+            if(sala.getDisponibilidad().equals("DISPONIBLE")){
+                return sala;
+            }
+        }
+        return null;
+    }
+
+    public Sala consultar(Integer id){
+        for (Sala sala : listaSalas) {
+            if(sala.getNumeroSala() == id) {
+                return sala;
+            }
+        }
+        return null;
+    }
 }

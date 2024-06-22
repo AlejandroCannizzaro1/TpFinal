@@ -20,8 +20,8 @@ public class ClienteRepository implements Repository <Cliente> {
 
     private Set<Cliente> listaClientes;
 
-    public Set<Cliente> getListaClientes() {
-        return listaClientes;
+    public HashSet<Cliente> getListaClientes() {
+        return (HashSet<Cliente>) listaClientes;
     }
 
     public void setListaClientes(Set<Cliente> listaClientes) {
@@ -49,8 +49,8 @@ public class ClienteRepository implements Repository <Cliente> {
     }
 
     @Override
-    public void actualizar(String dni, Cliente obj) {
-        Cliente clienteAactualizar = this.consultar(dni);
+    public void actualizar(String id, Cliente obj) {
+        Cliente clienteAactualizar = this.consultar(id);
 
         if (clienteAactualizar != null) {
             this.listaClientes.remove(clienteAactualizar);

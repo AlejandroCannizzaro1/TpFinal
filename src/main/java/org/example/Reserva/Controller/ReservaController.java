@@ -2,8 +2,6 @@ package org.example.Reserva.Controller;
 
 import org.example.Cliente.Controller.ClienteController;
 import org.example.Cliente.Model.Entity.Cliente;
-import org.example.Excepciones.Excepciones;
-import org.example.Excepciones.Validar;
 import org.example.Pelicula.Controller.PeliculaController;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Reserva.Model.Entity.Reserva;
@@ -11,10 +9,9 @@ import org.example.Reserva.Model.Repository.ReservaRepository;
 import org.example.Reserva.View.ReservaView;
 import org.example.Sala.Controller.SalaController;
 import org.example.Sala.Model.Entity.Sala;
+import org.example.Validaciones.Validar;
 
-import javax.swing.*;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class ReservaController {
     private ReservaView reservaView;
@@ -66,19 +63,19 @@ public class ReservaController {
         this.peliculaController = peliculaController;
     }
 
- /*   public void generarReserva(){
+    public void generarReserva() {
         String dni = clienteController.getClienteView().validarDni(); // busco cliente x dni
         Cliente clienteEncontrado = null;
         boolean ok = false;
 
-        for (Cliente cliente : clienteController.getClienteRepository().getListaClientes()){
-            if(cliente.getDni().equals(dni)){
+        for (Cliente cliente : clienteController.getClienteRepository().getListaClientes()) {
+            if (cliente.getDni().equals(dni)) {
                 clienteEncontrado = cliente;
                 clienteController.getClienteView().mostrarCliente(clienteEncontrado); // si lo encuentra lo muestra y lo guarda
                 ok = true;
             }
         }
-        if(!ok){ // si no lo encuentra lo crea y lo muestra
+        if (!ok) { // si no lo encuentra lo crea y lo muestra
             String nombre = clienteController.getClienteView().validarNombreYapellido();
             int edad = clienteController.getClienteView().validarEdad();
             clienteEncontrado = new Cliente(dni, nombre, edad);
@@ -88,19 +85,73 @@ public class ReservaController {
 
         Date fechaHoy = new Date();
         peliculaController.mostrarPelisFuturo(fechaHoy);
-        System.out.print("Ingrese el titulo: ");
 
-        Pelicula peliEncontrada = peliculaController.getPeliculaRepository().consultar(scanner.nextLine()); // devuelve la peli buscada x titulo // no olvidarse de validar (HACER)
+        Pelicula peliEncontrada = peliculaController.getPeliculaRepository().consultar(peliculaController.getPeliculaRepository().validarPelicula()); // devuelve la peli buscada x titulo //
         getPeliculaController().getPeliculaView().verPelicula(peliEncontrada); // muestro la peli elegida
 
+        Sala salaDisponible;
+        boolean listo = false;
 
-        Sala sala = new Sala(2);
-        salaController.getSalaRepository().addSala(sala); // guardo en el repo la sala recien creada
+        for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
+            if (entry.getValue().getPelicula().getTitulo().equals(peliEncontrada.getTitulo())) { // se fija si hay una reserva para esa peli
+                generarReserva(peliEncontrada, clienteEncontrado);
+                listo = true;
+            }
+        }
+        int flag = 0;
+        if(!listo) {
+            do {
+                System.out.print("Sala: ");
+                salaDisponible = salaController.getSalaRepository().consultar(scanner.nextInt());
+                if (salaDisponible != null){
+                    flag = 1;
+                    peliEncontrada.setSala(salaDisponible);
+                }
+                else {
+                    System.out.print("Esa no es una sala valida...");
+                }
+            }while(flag == 0);
+            generarReserva(peliEncontrada, clienteEncontrado);
+        }
+    }
 
-        salaController.elegirButacas(sala.getNumeroSala()); // le paso la numero 2 porque lo hardcodie arriba // se eligen las butacas
+    public void generarReserva(Pelicula peliEncontrada, Cliente clienteEncontrado) {
+        System.out.println("Numero de sala: " + peliEncontrada.getSala().getNumeroSala());
+        salaController.elegirButacas(clienteEncontrado, peliEncontrada.getSala());
 
-        Reserva reservaNueva = reservaView.crearReserva(clienteEncontrado, peliEncontrada, sala); // instancio la reserva nueva con los datos
+        Reserva reservaNueva = reservaView.crearReserva(clienteEncontrado, peliEncontrada); // instancio la reserva nueva con los datos
 
         reservaRepository.agregarReserva(reservaNueva.getId(), reservaNueva); // guardo la reserva en el repo
-    }*/
+
+        peliculaController.getPeliculaRepository().savePeliculas();
+    }
+
+    public void loadSalas() {
+        for (Map.Entry<Integer, Reserva> entryMap : reservaRepository.getReservaMap().entrySet()) {
+            for (Object pelicula : peliculaController.getPeliculaRepository().getListaPeliculas()) {
+                Pelicula pelicula1 = (Pelicula) pelicula;
+                if (Objects.equals(pelicula1.getTitulo(), entryMap.getValue().getPelicula().getTitulo())) {
+                    pelicula1.setSala(entryMap.getValue().getPelicula().getSala());
+                }
+            }
+        }
+    }
+
+    public void mostrarReservas() {
+        if (reservaRepository.getReservaMap().isEmpty()) {
+            System.out.println("No hay reservas registradas...");
+        } else {
+            for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
+                reservaView.verReserva(entry.getValue());
+            }
+        }
+    }
+
+    public void buscarPorCliente(Cliente cliente) {
+        for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
+            if(entry.getValue().getCliente().getDni().equals(cliente.getDni())) {
+                reservaView.verReserva(entry.getValue());
+            }
+        }
+    }
 }

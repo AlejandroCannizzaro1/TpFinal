@@ -3,23 +3,20 @@ package org.example.Cliente.Controller;
 import org.example.Cliente.Model.Entity.Cliente;
 import org.example.Cliente.Model.Repository.ClienteRepository;
 import org.example.Cliente.View.ClienteView;
-import org.example.Excepciones.Excepciones;
-import org.example.IntegracionDeSwing.View.GestionClientesView;
+import org.example.Swing.GestionClientesView;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
-
-import javax.swing.*;
 
 public class ClienteController {
 
     private ClienteRepository clienteRepository;
     private ClienteView clienteView;
+
     private GestionClientesView gestionClientesView;
 
-    public ClienteController(ClienteRepository clienteRepository, ClienteView clienteView,
-                             GestionClientesView gestionClientesView) {
+    public ClienteController(ClienteRepository clienteRepository, ClienteView clienteView, GestionClientesView gestionClientesView) {
         this.clienteRepository = clienteRepository;
         this.clienteView = clienteView;
         this.gestionClientesView = gestionClientesView;
@@ -45,46 +42,19 @@ public class ClienteController {
         clienteRepository.registrar(unCliente);
     }
 
-
-  /*  public void cargarClienteManual(){
-
+    public void cargarClienteManual(){
         clienteRepository.registrar(clienteView.cargarClienteManual());
     }
-*/
+
     public void mostrarListaClientes(){
-        Set<Cliente> listaClientes = clienteRepository.getListaClientes();
 
-        for (Cliente unCliente: listaClientes){
-            clienteView.mostrarCliente(unCliente);
-        }
-    }
-    public  void actualizarClienteController (JFrame parent) {
-        Integer opcion = -1;
-        String dni = this.clienteView.consultarDNIClienteView(parent);
-        if(!dni.equals("")){
-            Cliente cliente = clienteRepository.consultar(dni);
-            if(cliente != null){
-                opcion = this.clienteView.menuActualizarCliente(parent);
-                if (opcion != -1){
-                    Cliente clienteUpdated = this.clienteView.actualizaCliente(opcion, cliente, parent);
-                    if (clienteUpdated != null){
-                        this.clienteRepository.actualizar(dni,cliente);
-                    } else {
-                        System.out.println("\nError al actualizar campos del cliente !! ");
-                    }
-                } else {
-                    System.out.println("\nLa opcion no es valida !! ");
-                }
-            } else {
-                System.out.println("El cliente no existe !! ");
-            }
-        } else {
-            System.out.println("Error al tipear id !! ");
-        }
+        HashSet<Cliente> listaClientes = clienteRepository.getListaClientes();
+        gestionClientesView.mostrarListaClientes(gestionClientesView, listaClientes);
+
     }
 
 
-  /*  public void buscarCliente(){
+    public void buscarCliente(){
 
         Cliente clienteEncontrado = clienteRepository.consultar(clienteView.pedirDniCliente());
 
@@ -112,6 +82,6 @@ public class ClienteController {
 
         clienteRepository.saveClientes();
     }
-*/
+
 
 }

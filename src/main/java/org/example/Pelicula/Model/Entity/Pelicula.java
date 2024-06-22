@@ -1,4 +1,6 @@
 package org.example.Pelicula.Model.Entity;
+import org.example.Sala.Model.Entity.Sala;
+
 import java.util.Date;
 
 
@@ -8,16 +10,26 @@ public class Pelicula {
     private String genero;
     private int duracion; // Duración en minutos
     private Date fechasYhoras;  //o lo dividimos en dos
+    private Sala sala;
 
-    public Pelicula(String titulo, String genero, int duracion, Date fechasYhoras) {
+    public Pelicula(String titulo, String genero, int duracion, Date fechasYhoras, Sala sala) {
         this.titulo = titulo;
         this.genero = genero;
         this.duracion = duracion;
         this.fechasYhoras = fechasYhoras;
+        this.sala = sala;
     }
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
     }
 
     public void setTitulo(String titulo) {

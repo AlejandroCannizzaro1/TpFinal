@@ -1,5 +1,11 @@
-package org.example.Excepciones;
+package org.example.Validaciones;
 
+import org.example.Excepciones.Excepciones;
+import org.example.Pelicula.Model.Entity.Pelicula;
+import org.example.Sala.Model.Entity.Butaca;
+import org.example.Sala.Model.Entity.Sala;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Validar {
@@ -59,15 +65,13 @@ public class Validar {
         return num;
     }
 
-    public String letras(String mensaje) throws Excepciones{
-        System.out.println(mensaje);
+    public String letras(String mensaje) throws Excepciones {
+        System.out.print(mensaje);
         this.cadena = scanner.nextLine().trim();
 
         if (this.cadena.isEmpty()) {
             throw new Excepciones("El campo no puede estar vacio...");
-        }
-
-        else if (!this.cadena.matches("[a-zA-Z]+(\\s[a-zA-Z]+)*")){
+        } else if (!this.cadena.matches("[a-zA-Z]+(\\s[a-zA-Z]+)*")) {
             throw new Excepciones("Ingrese solo letras...");
         }
 
@@ -75,7 +79,7 @@ public class Validar {
     }
 
     public Integer numerosInt(String mensaje) throws Excepciones {
-        System.out.println(mensaje);
+        System.out.print(mensaje);
 
         if (!scanner.hasNextInt()) {
             scanner.nextLine();
@@ -89,28 +93,47 @@ public class Validar {
     }
 
     public String numerosString(String mensaje) throws Excepciones {
-        System.out.println(mensaje);
+        System.out.print(mensaje);
         this.cadena = scanner.nextLine();
 
         if (this.cadena.isEmpty()) {
             throw new Excepciones("El campo no puede estar vacio...");
         }
 
-        if (!this.cadena.matches("\\d+")){
+        if (!this.cadena.matches("\\d+")) {
             throw new Excepciones("Ingrese solo números...");
         }
         return this.cadena;
     }
 
-    public String campoVacio(String mensaje) throws Excepciones{
-        System.out.println(mensaje);
-        this.cadena = scanner.nextLine().trim();
-
-        if (this.cadena.isEmpty()) {
-            throw new Excepciones("El campo no puede estar vacio...");
+    public String validarPelicula(String mensaje, ArrayList<Pelicula> lista) throws Excepciones {
+        System.out.print(mensaje);
+        this.cadena = scanner.nextLine();
+        boolean ok = false;
+        for (Pelicula pelicula : lista) {
+            if (pelicula.getTitulo().equals(this.cadena)) {
+                ok = true;
+            }
         }
-
+        if (!ok) {
+            throw new Excepciones("La pelicula ingresada no corresponde a una registrada...");
+        }
         return this.cadena;
     }
 
+    public int validarButacas(String mensaje, ArrayList<Butaca> butacas) throws Excepciones {
+        System.out.print(mensaje);
+        this.id = scanner.nextInt();
+        if (!(this.id < butacas.size() && this.id > -1)) {
+            throw new Excepciones("Esa butaca no existe...");
+        }
+        for (Butaca butaca : butacas) {
+            if (butaca.getNumero() == this.id) {
+                if (butaca.getDisponibilidad().equals("OCUPADA")){
+                    throw new Excepciones("Esa butaca esta ocupada...");
+                }
+            }
+        }
+        return id;
+    }
 }

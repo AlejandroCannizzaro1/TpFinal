@@ -6,13 +6,15 @@ public class Cliente {
 
     private String dni;
     private String nombreYapellido;
-    private int edad;
+    private Integer edad;
 
     public Cliente(String dni, String nombreYapellido, int edad) {
         this.dni = dni;
         this.nombreYapellido = nombreYapellido;
         this.edad = edad;
     }
+
+    public Cliente(){}
 
     public String getDni() {
         return dni;

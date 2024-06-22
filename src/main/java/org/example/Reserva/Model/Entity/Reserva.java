@@ -4,20 +4,19 @@ import org.example.Cliente.Model.Entity.Cliente;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Sala.Model.Entity.Sala;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Reserva {
 
-    private int id;
+    private Integer id;
     private Cliente cliente;
     private Pelicula pelicula;
-    private Sala sala;
 
-    public Reserva(int id, Cliente cliente, Pelicula pelicula, Sala sala) {
+    public Reserva(Integer id, Cliente cliente, Pelicula pelicula) {
         this.id = id;
         this.cliente = cliente;
         this.pelicula = pelicula;
-        this.sala = sala;
     }
 
     public int getId() {
@@ -44,14 +43,6 @@ public class Reserva {
         this.pelicula = pelicula;
     }
 
-    public Sala getSala() {
-        return sala;
-    }
-
-    public void setSala(Sala sala) {
-        this.sala = sala;
-    }
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
@@ -64,5 +55,4 @@ public class Reserva {
     public int hashCode() {
         return Objects.hashCode(id);
     }
-
 }
