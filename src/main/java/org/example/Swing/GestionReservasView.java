@@ -1,4 +1,4 @@
-package org.example.IntegracionDeSwing;
+package org.example.Swing;
 
 import org.example.Sala.Model.Entity.Butaca;
 
@@ -15,114 +15,85 @@ public class GestionReservasView extends JFrame {
     private JPanel panelFondo;
     private ImageIcon imagenFondo;
 
-    public GestionReservasView() {
-        setTitle("Reservas");
+    public GestionReservasView () {
+        setTitle("Gestión de Clientes");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        // Cargar la imagen de fondo
-        String rutaImagen = "src/main/resources/fondo.jpg";
-        imagenFondo = new ImageIcon(getClass().getClassLoader().getResource(rutaImagen));
-
-        // Crear un JPanel personalizado para el fondo
-        panelFondo = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Dibujar imagen de fondo
-                g.drawImage(imagenFondo.getImage(), 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        panelFondo.setLayout(new BorderLayout());
-
-         /* Opcional: Configurar otros componentes sobre el fondo
-    JLabel etiqueta = new JLabel("Contenido sobre el fondo");
-    etiqueta.setForeground(Color.WHITE);
-    etiqueta.setHorizontalAlignment(SwingConstants.CENTER);
-    panelFondo.add(etiqueta, BorderLayout.CENTER);*/
-
-        // Establecer panelFondo como el contenido del JFrame
-        setContentPane(panelFondo);
-
-        setLocationRelativeTo(null); // Centrar en pantalla
-        setVisible(true);
     }
 
 
     public void verReserva(Reserva reserva, JFrame parent) {
+        StringBuilder mensaje = new StringBuilder();
+        mensaje.append("<html><body style='padding: 10px;'>")
+                .append("<h2>Detalles de la Reserva</h2>")
+                .append("<p><strong>Cliente:</strong> ").append(reserva.getCliente().getNombreYapellido()).append("</p>")
+                .append("<p><strong>DNI Cliente:</strong> ").append(reserva.getCliente().getDni()).append("</p>")
+                .append("<p><strong>Edad Cliente:</strong> ").append(reserva.getCliente().getEdad()).append("</p>")
+                .append("<br>")
+                .append("<h3>Película</h3>")
+                .append("<p><strong>Título:</strong> ").append(reserva.getPelicula().getTitulo()).append("</p>")
+                .append("<p><strong>Género:</strong> ").append(reserva.getPelicula().getGenero()).append("</p>")
+                .append("<p><strong>Duración:</strong> ").append(reserva.getPelicula().getDuracion()).append(" minutos</p>")
+                .append("<p><strong>Fecha:</strong> ").append(reserva.getPelicula().getFechasYhoras()).append("</p>")
+                .append("</body></html>");
 
-
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false); // Hacer el JTextArea no editable
-
-        textArea.append("Detalles de la Reserva:\n");
-        textArea.append("Cliente: " + reserva.getCliente().getNombreYapellido() + "\n");
-        textArea.append("DNI Cliente: " + reserva.getCliente().getDni() + "\n");
-        textArea.append("Edad Cliente: " + reserva.getCliente().getEdad() + "\n\n");
-
-        textArea.append("Película:\n");
-        textArea.append("Título: " + reserva.getPelicula().getTitulo() + "\n");
-        textArea.append("Género: " + reserva.getPelicula().getGenero() + "\n");
-        textArea.append("Duración: " + reserva.getPelicula().getDuracion() + " minutos\n");
-        textArea.append("Fecha: " + reserva.getPelicula().getFechasYhoras() + "\n\n");
-
-
-       /* textArea.append("Sala:\n");
-        textArea.append("Número de Sala: " + reserva.getSala().getNumeroSala() + "\n");
-        textArea.append("Butacas Disponibles: \n");
-
-        for (Butaca butaca : reserva.getSala().getButacas()) {
-            if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
-                textArea.append("[" + butaca.getNumero() + "] ");
-            }
-        }*/
-
-
-
-        textArea.append("\n\n");
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-        JOptionPane.showMessageDialog(parent, scrollPane, "Detalles de la Reserva", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(parent, mensaje.toString(), "Detalles de la Reserva", JOptionPane.INFORMATION_MESSAGE);
     }
 
+
     public void verReservas(Map<Integer, Reserva> reservasMap, JFrame parent) {
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false); // Hacer el JTextArea no editable
+        JFrame frame = new JFrame("Lista de Reservas");
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(parent);
+        frame.setLayout(new BorderLayout());
+
+        // Crear un panel para contener la información de las reservas
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         for (Map.Entry<Integer, Reserva> entry : reservasMap.entrySet()) {
             Reserva reserva = entry.getValue();
+            StringBuilder mensaje = new StringBuilder();
+            mensaje.append("<html><body style='padding: 10px;'>")
+                    .append("<h2>Detalles de la Reserva</h2>")
+                    .append("<p><strong>Cliente:</strong> ").append(reserva.getCliente().getNombreYapellido()).append("</p>")
+                    .append("<p><strong>DNI Cliente:</strong> ").append(reserva.getCliente().getDni()).append("</p>")
+                    .append("<p><strong>Edad Cliente:</strong> ").append(reserva.getCliente().getEdad()).append("</p>")
+                    .append("<br>")
+                    .append("<p><strong>Película</strong></p>")
+                    .append("<p><strong>Título:</strong> ").append(reserva.getPelicula().getTitulo()).append("</p>")
+                    .append("<p><strong>Género:</strong> ").append(reserva.getPelicula().getGenero()).append("</p>")
+                    .append("<p><strong>Duración:</strong> ").append(reserva.getPelicula().getDuracion()).append(" minutos</p>")
+                    .append("<p><strong>Fecha:</strong> ").append(reserva.getPelicula().getFechasYhoras()).append("</p>")
+                    .append("<hr>")
+                    .append("</body></html>");
 
-            textArea.append("Detalles de la Reserva:\n");
-            textArea.append("Cliente: " + reserva.getCliente().getNombreYapellido() + "\n");
-            textArea.append("DNI Cliente: " + reserva.getCliente().getDni() + "\n");
-            textArea.append("Edad Cliente: " + reserva.getCliente().getEdad() + "\n\n");
-
-            textArea.append("Película:\n");
-            textArea.append("Título: " + reserva.getPelicula().getTitulo() + "\n");
-            textArea.append("Género: " + reserva.getPelicula().getGenero() + "\n");
-            textArea.append("Duración: " + reserva.getPelicula().getDuracion() + " minutos\n");
-            textArea.append("Fecha: " + reserva.getPelicula().getFechasYhoras() + "\n\n");
-/*
-            textArea.append("Sala:\n");
-            textArea.append("Número de Sala: " + reserva.getSala().getNumeroSala() + "\n");
-            textArea.append("Butacas Disponibles: \n");
-
-            for (Butaca butaca : reserva.getSala().getButacas()) {
-                if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
-                    textArea.append("[" + butaca.getNumero() + "] ");
-                }
-            }*/
-
-            textArea.append("\n\n");
-            textArea.append("--------------------------\n\n");
+            JLabel label = new JLabel(mensaje.toString());
+            label.setVerticalAlignment(SwingConstants.TOP);
+            panel.add(label);
         }
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        // Crear un JScrollPane para hacer scroll en el contenido
+        JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        JOptionPane.showMessageDialog(parent, scrollPane, "Lista de Reservas", JOptionPane.PLAIN_MESSAGE);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Añadir un botón de cerrar
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnCerrar.setBackground(Color.DARK_GRAY);
+        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.addActionListener(e -> frame.dispose());
+        JPanel panelSur = new JPanel();
+        panelSur.add(btnCerrar);
+        frame.add(panelSur, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
     }
 
 }

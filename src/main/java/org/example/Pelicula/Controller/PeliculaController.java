@@ -1,23 +1,31 @@
 package org.example.Pelicula.Controller;
 
+import org.example.Cliente.Model.Entity.Cliente;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Pelicula.Model.Repository.PeliculaRepository;
 import org.example.Pelicula.View.PeliculaView;
 import org.example.Sala.Controller.SalaController;
+import org.example.Swing.GestionPeliculasView;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 public class PeliculaController {
     private PeliculaView peliculaView;
     private PeliculaRepository peliculaRepository;
     private SalaController salaController;
+    private GestionPeliculasView gestionPeliculasView;
 
 
     //---------------------------------------- CONSTRUCTOR GETTER SETTER -----------------------------------------------//
-    public PeliculaController(PeliculaView peliculaView, PeliculaRepository peliculaRepository, SalaController salaController) {
+    public PeliculaController(PeliculaView peliculaView, PeliculaRepository peliculaRepository,
+                              GestionPeliculasView gestionPeliculasView , SalaController salaController) {
         this.peliculaView = peliculaView;
         this.peliculaRepository = peliculaRepository;
         this.salaController = salaController;
+        this.gestionPeliculasView = gestionPeliculasView;
     }
 
     public PeliculaView getPeliculaView() {
@@ -50,16 +58,22 @@ public class PeliculaController {
         peliculaRepository.registrar(peliculaView.crearPelicula());
     }
     public void mostrarListPeliculas(){
-        for (Object pelicula : getPeliculaRepository().getListaPeliculas()) {
-            Pelicula pelicula1 = (Pelicula) pelicula;
-            peliculaView.verPelicula(pelicula1);
+
+            ArrayList <Pelicula> listaPeliculas = this.peliculaRepository.getListaPeliculas();
+        if(!listaPeliculas.isEmpty()){
+            gestionPeliculasView.mostrarListaPeliculas(this.gestionPeliculasView, listaPeliculas);
+        } else {
+            JOptionPane.showMessageDialog(null, "Lista de peliculas vacia", "Peliculas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void buscarPelicula() {
         Pelicula unaPelicula = peliculaRepository.consultar(peliculaView.pedirTitulo());
         if (unaPelicula != null) {
-            peliculaView.verPelicula(unaPelicula);
+            JOptionPane.showMessageDialog(null, "Pelicula Valida", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
+            gestionPeliculasView.verPelicula(this.gestionPeliculasView, unaPelicula);
+        } else {
+            JOptionPane.showMessageDialog(null, "La pelicula no existe", "Peliculas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -70,17 +84,17 @@ public class PeliculaController {
         if ( peliculaAactualizar != null) {
 
             peliculaRepository.actualizar(peliculaAactualizar.getTitulo(), peliculaView.crearPelicula());
-            System.out.println("La Actualizacion fue exitosa!");
+            JOptionPane.showMessageDialog(null, "Actualizacion Exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
 
         }
         else {
-            System.out.println("La Pelicula ingresado no existe!");
+            JOptionPane.showMessageDialog(null, "Pelicula Inexistente", "Peliculas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void eliminarPelicula(){
         peliculaRepository.eliminar(peliculaView.pedirTitulo());
-        System.out.println("La Pelicula se elimino con exito!");
+        JOptionPane.showMessageDialog(null, "Eliminacion de pelicula exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
@@ -88,7 +102,7 @@ public class PeliculaController {
         for (Object pelicula : getPeliculaRepository().getListaPeliculas()) {
             Pelicula pelicula1 = (Pelicula) pelicula;
             if(pelicula1.getFechasYhoras().getTime() > fecha.getTime()) {
-                peliculaView.verPelicula(pelicula1);
+                gestionPeliculasView.verPelicula(this.gestionPeliculasView, pelicula1);
             }
         }
     }

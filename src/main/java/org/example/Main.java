@@ -14,6 +14,8 @@ import org.example.Sala.Controller.SalaController;
 import org.example.Sala.Model.Repository.SalaRepository;
 import org.example.Sala.View.SalaView;
 import org.example.Swing.GestionClientesView;
+import org.example.Swing.GestionPeliculasView;
+import org.example.Swing.GestionReservasView;
 
 import java.util.Scanner;
 
@@ -23,9 +25,13 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
+        GestionClientesView gestionClientesView = new GestionClientesView();
+        GestionPeliculasView gestionPeliculasView = new GestionPeliculasView();
+        GestionReservasView gestionReservasView = new GestionReservasView();
+
+
         ClienteRepository clienteRepository = new ClienteRepository();
         ClienteView clienteView = new ClienteView();
-        GestionClientesView gestionClientesView = new GestionClientesView();
         ClienteController clienteController = new ClienteController(clienteRepository, clienteView, gestionClientesView);
 
         SalaView salaView = new SalaView();
@@ -34,11 +40,14 @@ public class Main {
 
         PeliculaView peliculaView = new PeliculaView();
         PeliculaRepository peliculaRepository = new PeliculaRepository();
-        PeliculaController peliculaController = new PeliculaController(peliculaView, peliculaRepository, salaController);
+        PeliculaController peliculaController = new PeliculaController(peliculaView, peliculaRepository, gestionPeliculasView,
+                salaController);
 
         ReservaView reservaView = new ReservaView();
         ReservaRepository reservaRepository = new ReservaRepository();
-        ReservaController reservaController = new ReservaController(reservaView, reservaRepository, clienteController, peliculaController, salaController);
+        ReservaController reservaController = new ReservaController(reservaView, reservaRepository, clienteController,
+                peliculaController, salaController, gestionClientesView, gestionPeliculasView, gestionReservasView,
+                clienteView, clienteRepository);
 
         clienteRepository.loadClientes();
         peliculaRepository.loadPeliculas();
@@ -53,6 +62,7 @@ public class Main {
             System.out.println("3- Menu Reserva");
             System.out.println("4- Sign out");
 
+
             System.out.println("Ingrese una opción");
             op = scanner.nextInt(); // Leer la entrada como cadena
             switch (op) {
@@ -65,7 +75,7 @@ public class Main {
                         System.out.println("3- Buscar un Cliente");
                         System.out.println("4- Actualizar un Cliente");
                         System.out.println("5- Eliminar un Cliente");
-                        System.out.println("6- Sign out");
+                        System.out.println("6- Volver atras");
 
                         System.out.println("Ingrese una opción");
                         op1 = scanner.nextInt();
@@ -102,7 +112,7 @@ public class Main {
                         System.out.println("3- Buscar una Pelicula");
                         System.out.println("4- Actualizar una Pelicula");
                         System.out.println("5- Eliminar una Pelicula");
-                        System.out.println("6- Sign out");
+                        System.out.println("6- Volver atras");
 
                         System.out.println("Ingrese una opción");
                         op2 = scanner.nextInt();
@@ -139,7 +149,7 @@ public class Main {
                         System.out.println("3- Buscar una Reserva");
                         System.out.println("4- Actualizar una Reserva");
                         System.out.println("5- Eliminar una Reserva");
-                        System.out.println("6- Sign out");
+                        System.out.println("6- ");
 
                         System.out.println("Ingrese una opción");
                         op3 = scanner.nextInt();
@@ -151,8 +161,7 @@ public class Main {
                                 reservaController.mostrarReservas();
                                 break;
                             case 3:
-                                System.out.print("Ingrese DNI del cliente para ver sus reservas: ");
-                                reservaController.buscarPorCliente(clienteRepository.consultar(scanner.nextLine()));
+                                reservaController.buscarPorCliente();
                                 break;
                             case 4:
                                 //metodo para actualizar reserva

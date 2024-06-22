@@ -2,6 +2,8 @@ package org.example.Reserva.Model.Repository;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.example.Cliente.Model.Entity.Cliente;
+import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Reserva.Model.Entity.Reserva;
 
 import java.io.*;
@@ -56,5 +58,25 @@ public class ReservaRepository {
         reservaMap.put(key, reserva);
         saveReservas();
         System.out.println("RESERVADO CON EXITO!!!");
+    }
+    public int gestLastIdReserva (){
+        Integer lastId = 0 ;
+        if(!this.reservaMap.isEmpty()){
+            for (Map.Entry<Integer, Reserva> entry : this.reservaMap.entrySet()){
+                Reserva reserva = entry.getValue();
+                if (reserva.getId()>lastId){
+                    lastId = reserva.getId();
+                }
+            }
+        }
+        lastId = lastId +1;
+        return lastId;
+    }
+
+    public Reserva crearReserva(Cliente cliente, Pelicula pelicula) {
+        System.out.print("ID de la reserva: ");
+        int id = gestLastIdReserva();
+        System.out.println(id);
+        return new Reserva(id, cliente, pelicula);
     }
 }

@@ -2,6 +2,8 @@ package org.example.Reserva.Controller;
 
 import org.example.Cliente.Controller.ClienteController;
 import org.example.Cliente.Model.Entity.Cliente;
+import org.example.Cliente.Model.Repository.ClienteRepository;
+import org.example.Cliente.View.ClienteView;
 import org.example.Pelicula.Controller.PeliculaController;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Reserva.Model.Entity.Reserva;
@@ -9,26 +11,44 @@ import org.example.Reserva.Model.Repository.ReservaRepository;
 import org.example.Reserva.View.ReservaView;
 import org.example.Sala.Controller.SalaController;
 import org.example.Sala.Model.Entity.Sala;
+import org.example.Swing.GestionClientesView;
+import org.example.Swing.GestionPeliculasView;
+import org.example.Swing.GestionReservasView;
 import org.example.Validaciones.Validar;
 
+import javax.swing.*;
 import java.util.*;
 
 public class ReservaController {
     private ReservaView reservaView;
+    private ClienteView clienteView;
     private ReservaRepository reservaRepository;
+    private ClienteRepository clienteRepository;
     private ClienteController clienteController;
     private PeliculaController peliculaController;
     private SalaController salaController;
+    GestionReservasView gestionReservasView;
+   GestionPeliculasView gestionPeliculasView;
+   GestionClientesView gestionClientesView;
 
     Scanner scanner = new Scanner(System.in);
     Validar validar = new Validar();
 
-    public ReservaController(ReservaView reservaView, ReservaRepository reservaRepository, ClienteController clienteController, PeliculaController peliculaController, SalaController salaController) {
+    public ReservaController(ReservaView reservaView, ReservaRepository reservaRepository, ClienteController clienteController,
+                             PeliculaController peliculaController, SalaController salaController,
+                             GestionClientesView gestionClientesView, GestionPeliculasView gestionPeliculasView,
+                             GestionReservasView gestionReservasView, ClienteView clienteView, ClienteRepository clienteRepository) {
         this.reservaView = reservaView;
         this.reservaRepository = reservaRepository;
         this.clienteController = clienteController;
         this.peliculaController = peliculaController;
         this.salaController = salaController;
+        this.gestionPeliculasView = gestionPeliculasView;
+        this.gestionClientesView = gestionClientesView;
+        this.gestionReservasView = gestionReservasView;
+        this.clienteView = clienteView;
+        this.clienteRepository = clienteRepository;
+
     }
 
     public ReservaView getReservaView() {
@@ -62,32 +82,39 @@ public class ReservaController {
     public void setPeliculaController(PeliculaController peliculaController) {
         this.peliculaController = peliculaController;
     }
-
+    public void mostrarListReservas(){
+        Map <Integer, Reserva> mapReservas = this.reservaRepository.getReservaMap();
+        if(!mapReservas.isEmpty()){
+            this.gestionReservasView.verReservas(mapReservas, this.gestionReservasView);
+        } else {
+            JOptionPane.showMessageDialog(null, "Mapa vacio" , "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     public void generarReserva() {
-        String dni = clienteController.getClienteView().validarDni(); // busco cliente x dni
+        String dni = clienteController.getClienteView().validarDni(gestionClientesView); // busco cliente x dni
         Cliente clienteEncontrado = null;
         boolean ok = false;
 
         for (Cliente cliente : clienteController.getClienteRepository().getListaClientes()) {
             if (cliente.getDni().equals(dni)) {
                 clienteEncontrado = cliente;
-                clienteController.getClienteView().mostrarCliente(clienteEncontrado); // si lo encuentra lo muestra y lo guarda
+                gestionClientesView.mostrarCliente(gestionClientesView, clienteEncontrado); // si lo encuentra lo muestra y lo guarda
                 ok = true;
             }
         }
         if (!ok) { // si no lo encuentra lo crea y lo muestra
-            String nombre = clienteController.getClienteView().validarNombreYapellido();
-            int edad = clienteController.getClienteView().validarEdad();
+            String nombre = clienteController.getClienteView().validarNombreYapellido(gestionClientesView);
+            int edad = clienteController.getClienteView().validarEdad(gestionClientesView);
             clienteEncontrado = new Cliente(dni, nombre, edad);
             clienteController.getClienteRepository().registrar(clienteEncontrado);
-            clienteController.getClienteView().mostrarCliente(clienteEncontrado);
+            gestionClientesView.mostrarCliente(gestionClientesView, clienteEncontrado);
         }
 
         Date fechaHoy = new Date();
         peliculaController.mostrarPelisFuturo(fechaHoy);
 
         Pelicula peliEncontrada = peliculaController.getPeliculaRepository().consultar(peliculaController.getPeliculaRepository().validarPelicula()); // devuelve la peli buscada x titulo //
-        getPeliculaController().getPeliculaView().verPelicula(peliEncontrada); // muestro la peli elegida
+        gestionPeliculasView.verPelicula(gestionPeliculasView, peliEncontrada); // muestro la peli elegida
 
         Sala salaDisponible;
         boolean listo = false;
@@ -101,14 +128,14 @@ public class ReservaController {
         int flag = 0;
         if(!listo) {
             do {
-                System.out.print("Sala: ");
+                JOptionPane.showMessageDialog(null, "Sala", "Reservas", JOptionPane.INFORMATION_MESSAGE);
                 salaDisponible = salaController.getSalaRepository().consultar(scanner.nextInt());
                 if (salaDisponible != null){
                     flag = 1;
                     peliEncontrada.setSala(salaDisponible);
                 }
                 else {
-                    System.out.print("Esa no es una sala valida...");
+                    JOptionPane.showMessageDialog(null, "Sala invalida", "Reservas", JOptionPane.ERROR_MESSAGE);
                 }
             }while(flag == 0);
             generarReserva(peliEncontrada, clienteEncontrado);
@@ -119,7 +146,7 @@ public class ReservaController {
         System.out.println("Numero de sala: " + peliEncontrada.getSala().getNumeroSala());
         salaController.elegirButacas(clienteEncontrado, peliEncontrada.getSala());
 
-        Reserva reservaNueva = reservaView.crearReserva(clienteEncontrado, peliEncontrada); // instancio la reserva nueva con los datos
+        Reserva reservaNueva = reservaRepository.crearReserva(clienteEncontrado, peliEncontrada); // instancio la reserva nueva con los datos
 
         reservaRepository.agregarReserva(reservaNueva.getId(), reservaNueva); // guardo la reserva en el repo
 
@@ -139,19 +166,30 @@ public class ReservaController {
 
     public void mostrarReservas() {
         if (reservaRepository.getReservaMap().isEmpty()) {
-            System.out.println("No hay reservas registradas...");
+            JOptionPane.showMessageDialog(null, "No hay reservas registradas", "Reservas", JOptionPane.INFORMATION_MESSAGE);
         } else {
             for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
-                reservaView.verReserva(entry.getValue());
+                gestionReservasView.verReserva(entry.getValue(), gestionReservasView);
             }
         }
     }
 
-    public void buscarPorCliente(Cliente cliente) {
-        for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
-            if(entry.getValue().getCliente().getDni().equals(cliente.getDni())) {
-                reservaView.verReserva(entry.getValue());
-            }
+    public void buscarPorCliente() {
+        String id = this.clienteView.pedirDniCliente(gestionClientesView);
+        Cliente cliente = this.clienteRepository.consultar(id);
+        if (cliente != null) {
+        if(!this.reservaRepository.getReservaMap().isEmpty()) {
+                for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
+                    Reserva reserva = entry.getValue();
+                    if (reserva.getCliente().getDni().equals(cliente.getDni())) {
+                        gestionReservasView.verReserva(entry.getValue(), gestionReservasView);
+                    }
+                }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay reservas registradas", "Reservas", JOptionPane.INFORMATION_MESSAGE);
+        }
+        } else {
+            JOptionPane.showMessageDialog(null, "Cliente == null", "Clientes", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

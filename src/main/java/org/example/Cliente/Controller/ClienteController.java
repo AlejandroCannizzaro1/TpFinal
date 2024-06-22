@@ -5,6 +5,7 @@ import org.example.Cliente.Model.Repository.ClienteRepository;
 import org.example.Cliente.View.ClienteView;
 import org.example.Swing.GestionClientesView;
 
+import javax.swing.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,23 +44,27 @@ public class ClienteController {
     }
 
     public void cargarClienteManual(){
-        clienteRepository.registrar(clienteView.cargarClienteManual());
+        clienteRepository.registrar(clienteView.cargarClienteManual(gestionClientesView));
     }
 
     public void mostrarListaClientes(){
 
         HashSet<Cliente> listaClientes = clienteRepository.getListaClientes();
-        gestionClientesView.mostrarListaClientes(gestionClientesView, listaClientes);
 
+        if(!listaClientes.isEmpty()){
+            gestionClientesView.mostrarListaClientes(gestionClientesView, listaClientes);
+        } else {
+            JOptionPane.showMessageDialog(null, "Lista de clientes vacia", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
 
     public void buscarCliente(){
 
-        Cliente clienteEncontrado = clienteRepository.consultar(clienteView.pedirDniCliente());
+        Cliente clienteEncontrado = clienteRepository.consultar(clienteView.pedirDniCliente(gestionClientesView));
 
         if (clienteEncontrado != null) {
-            clienteView.mostrarCliente(clienteEncontrado);
+            gestionClientesView.mostrarCliente(gestionClientesView, clienteEncontrado);
         }else {
             clienteView.mensaje1();
         }
@@ -67,7 +72,7 @@ public class ClienteController {
 
     public void eliminarCliente(){
 
-        String dni = clienteView.pedirDniCliente();
+        String dni = clienteView.pedirDniCliente(gestionClientesView);
         clienteRepository.eliminar(dni);
 
         clienteRepository.saveClientes();
@@ -76,8 +81,8 @@ public class ClienteController {
 
     public void actualizarCliente(){
 
-        String dni = clienteView.pedirDniCliente();
-        Cliente clienteActualizado = clienteView.cargarClienteManual();
+        String dni = clienteView.pedirDniCliente(gestionClientesView);
+        Cliente clienteActualizado = clienteView.cargarClienteManual(gestionClientesView);
         clienteRepository.actualizar(dni, clienteActualizado);
 
         clienteRepository.saveClientes();

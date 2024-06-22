@@ -11,16 +11,16 @@ import java.util.Scanner;
 
 public class ReservaView {
 
-    Scanner scanner = new Scanner(System.in);
+    /*Scanner scanner = new Scanner(System.in);*
 
-    public Reserva crearReserva(Cliente cliente, Pelicula pelicula) {
+   public Reserva crearReserva(Cliente cliente, Pelicula pelicula) {
         System.out.print("ID de la reserva: ");
         int id = scanner.nextInt();
         System.out.println(id);
         return new Reserva(id, cliente, pelicula);
     }
-
-    public void verReserva(Reserva reserva) { // corregir
+*/
+    /*public void verReserva(Reserva reserva) { // corregir
 
         System.out.print(reserva.getCliente().getNombreYapellido() + " - Sala " + reserva.getPelicula().getSala().getNumeroSala() + " - " + reserva.getPelicula().getTitulo() + " - " + reserva.getPelicula().getFechasYhoras() + "- Butacas: ");
         for (Butaca butaca : reserva.getPelicula().getSala().getButacas()) {
@@ -30,5 +30,5 @@ public class ReservaView {
             }
         }
         System.out.println("\n");
-    }
+    }*/
 }

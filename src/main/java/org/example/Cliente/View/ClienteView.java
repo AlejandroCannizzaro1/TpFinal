@@ -6,95 +6,109 @@ import org.example.Validaciones.Validar;
 
 import javax.swing.*;
 import java.util.Scanner;
-
 public class ClienteView {
+public void mensaje1() {
+    JOptionPane.showMessageDialog(null, "El Cliente buscado no existe!", "Error", JOptionPane.ERROR_MESSAGE);
+}
 
-    Validar validar = new Validar();
-
-    Scanner scanner = new Scanner(System.in);
-    public void mensaje1(){
-        System.out.println("El Cliente buscado no existe!");
-    }
-
-    public void mostrarCliente(Cliente unCliente){
-        System.out.println("--------------------------");
-        System.out.println("DNI Cliente: " + unCliente.getDni());
-        System.out.println("Nombre y Apellido: " + unCliente.getNombreYapellido());
-        System.out.println("Edad: " + unCliente.getEdad());
-        System.out.println("--------------------------");
-    }
-
-    public Cliente cargarClienteManual(){
-        System.out.println("--------CREACION DE CLIENTE--------");
-
-        String dni = validarDni();
-        String nombreYapellido = validarNombreYapellido();
-        int edad = validarEdad();
-
-        return new Cliente(dni, nombreYapellido, edad);
-    }
+public Cliente cargarClienteManual(JFrame parent) {
 
 
+    String dni = validarDni(parent);
+    String nombreYapellido = validarNombreYapellido(parent);
+    int edad = validarEdad(parent);
 
-    public String validarNombreYapellido(){
-        boolean ok = false;
-        String nombre = "";
-        while(!ok){
-            try{
-                nombre = validar.letras("Ingrese el Nombre y Apellido del Cliente: ");
-                ok=true;
-            }catch (Excepciones excepciones){
-                System.out.println(excepciones.getMessage());
+    return new Cliente(dni, nombreYapellido, edad);
+}
+
+public String validarNombreYapellido(JFrame parent) {
+    String nombre = "";
+    boolean ok = false;
+    while (!ok) {
+        try {
+            nombre = JOptionPane.showInputDialog(parent, "Ingrese el Nombre y Apellido del Cliente:", "Nombre y Apellido", JOptionPane.QUESTION_MESSAGE);
+            if (nombre == null || nombre.trim().isEmpty()) {
+                throw new Excepciones("El campo no puede estar vacío...");
+            } else if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+                throw new Excepciones("Ingrese solo letras y espacios...");
             }
+            ok = true;
+        } catch (Excepciones e) {
+            mostrarError(parent, e.getMessage());
         }
-        return nombre;
     }
+    return nombre.trim();
+}
 
-    public int validarEdad(){
-        boolean ok = false;
-        int edad = 0;
-        while(!ok){
-            try{
-                edad = validar.numerosInt("Ingrese la Edad del Cliente: ");
-                ok=true;
-            }catch (Excepciones excepciones){
-                System.out.println(excepciones.getMessage());
+public int validarEdad(JFrame parent) {
+    int edad = 0;
+    boolean ok = false;
+    while (!ok) {
+        try {
+            String input = JOptionPane.showInputDialog(parent, "Ingrese la Edad del Cliente:", "Edad", JOptionPane.QUESTION_MESSAGE);
+            if (input == null) {
+                throw new Excepciones("La operación fue cancelada...");
             }
-        }
-        return edad;
-    }
-
-    public String validarDni(){
-        boolean ok = false;
-        String dni = "";
-        while(!ok){
-            try{
-                dni = validar.numerosString("Ingrese el DNI del Cliente: ");
-                ok=true;
-            }catch (Excepciones excepciones){
-                System.out.println(excepciones.getMessage());
+            edad = Integer.parseInt(input.trim());
+            if (edad <= 0) {
+                throw new Excepciones("La edad debe ser mayor que cero...");
             }
+            ok = true;
+        } catch (NumberFormatException | Excepciones e) {
+            mostrarError(parent, e.getMessage());
         }
-        return dni;
     }
+    return edad;
+}
 
-
-    public String pedirDniCliente(){
-        boolean ok = false;
-        String dni = "";
-        while(!ok){
-            try{
-                dni = validar.numerosString("Ingrese el DNI del Cliente buscado: ");
-                ok=true;
-            }catch (Excepciones excepciones){
-                System.out.println(excepciones.getMessage());
+public String validarDni(JFrame parent) {
+    String dni = "";
+    boolean ok = false;
+    while (!ok) {
+        try {
+            dni = JOptionPane.showInputDialog(parent, "Ingrese el DNI del Cliente:", "DNI", JOptionPane.QUESTION_MESSAGE);
+            if (dni == null) {
+                throw new Excepciones("La operación fue cancelada...");
             }
+            if (!dni.matches("\\d+")) {
+                throw new Excepciones("Ingrese solo números para el DNI...");
+            }
+            ok = true;
+        } catch (Excepciones e) {
+            mostrarError(parent, e.getMessage());
         }
-        return dni;
     }
+    return dni.trim();
+}
+
+public String pedirDniCliente(JFrame parent) {
+    String dni = "";
+    boolean ok = false;
+    while (!ok) {
+        try {
+            dni = JOptionPane.showInputDialog(parent, "Ingrese el DNI del Cliente buscado:", "Buscar Cliente", JOptionPane.QUESTION_MESSAGE);
+            if (dni == null) {
+                throw new Excepciones("La operación fue cancelada...");
+            }
+            if (!dni.matches("\\d+")) {
+                throw new Excepciones("Ingrese solo números para el DNI...");
+            }
+            ok = true;
+        } catch (Excepciones e) {
+            mostrarError(parent, e.getMessage());
+        }
+    }
+    return dni.trim();
+}
+
+private void mostrarError(JFrame parent, String mensaje) {
+    JOptionPane.showMessageDialog(parent, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+}
+}
+// Ejemplo de uso en un entorno Swing
 
 /*
-    public String validarNombreYapellido(JFrame parent) {
+    public String validarNombreYapellido() {
         boolean ok = false;
         String nombre = "";
         while (!ok) {
@@ -113,7 +127,7 @@ public class ClienteView {
         return nombre;
     }
 
-    public int validarEdad(JFrame parent) {
+    public int validarEdad() {
         boolean ok = false;
         int edad = 0;
         while (!ok) {
@@ -136,7 +150,7 @@ public class ClienteView {
         return edad;
     }
 
-    public String validarDni(JFrame parent) {
+    public String validarDni() {
         boolean ok = false;
         String dni = "";
         while (!ok) {
@@ -157,6 +171,6 @@ public class ClienteView {
  */
 
 
-}
+
 
 
