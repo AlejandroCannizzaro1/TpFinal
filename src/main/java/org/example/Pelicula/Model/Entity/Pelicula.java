@@ -8,7 +8,7 @@ public class Pelicula {
 
     private String titulo;
     private String genero;
-    private int duracion; // Duración en minutos
+    private Integer duracion; // Duración en minutos
     private Date fechasYhoras;  //o lo dividimos en dos
     private Sala sala;
 
@@ -19,6 +19,7 @@ public class Pelicula {
         this.fechasYhoras = fechasYhoras;
         this.sala = sala;
     }
+    public Pelicula(){}
 
     public String getTitulo() {
         return titulo;

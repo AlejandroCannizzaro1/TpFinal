@@ -49,6 +49,8 @@ public class Main {
                 peliculaController, salaController, gestionClientesView, gestionPeliculasView, gestionReservasView,
                 clienteView, clienteRepository);
 
+        salaController.crearSala();
+
         clienteRepository.loadClientes();
         peliculaRepository.loadPeliculas();
         reservaController.loadSalas();
@@ -138,7 +140,7 @@ public class Main {
                             default:
                                 System.out.println("Opción no válida. Por favor, ingrese una opción válida.");
                         }
-                    }while (op2 != 6);
+                    } while (op2 != 6);
                     break;
 
                 case 3:
@@ -149,7 +151,7 @@ public class Main {
                         System.out.println("3- Buscar una Reserva");
                         System.out.println("4- Actualizar una Reserva");
                         System.out.println("5- Eliminar una Reserva");
-                        System.out.println("6- ");
+                        System.out.println("6- Volver atras");
 
                         System.out.println("Ingrese una opción");
                         op3 = scanner.nextInt();
@@ -175,7 +177,7 @@ public class Main {
                             default:
                                 System.out.println("Opción no válida. Por favor, ingrese una opción válida.");
                         }
-                    }while (op3 != 6);
+                    } while (op3 != 6);
                     break;
 
                 case 4:
@@ -183,16 +185,11 @@ public class Main {
                 default:
                     System.out.println("Opción no válida. Por favor, ingrese una opción válida.");
             }
-        }while (op != 4);
+        } while (op != 4);
         System.out.println("Programa finalizado");
         scanner.close();
     }
-
-
-
-
-
-    }
+}
 
 
 

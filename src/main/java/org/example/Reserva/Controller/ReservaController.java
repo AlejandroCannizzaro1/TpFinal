@@ -10,6 +10,7 @@ import org.example.Reserva.Model.Entity.Reserva;
 import org.example.Reserva.Model.Repository.ReservaRepository;
 import org.example.Reserva.View.ReservaView;
 import org.example.Sala.Controller.SalaController;
+import org.example.Sala.Model.Entity.Butaca;
 import org.example.Sala.Model.Entity.Sala;
 import org.example.Swing.GestionClientesView;
 import org.example.Swing.GestionPeliculasView;
@@ -118,11 +119,19 @@ public class ReservaController {
 
         Sala salaDisponible;
         boolean listo = false;
+        boolean ok2 = false;
 
         for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
             if (entry.getValue().getPelicula().getTitulo().equals(peliEncontrada.getTitulo())) { // se fija si hay una reserva para esa peli
-                generarReserva(peliEncontrada, clienteEncontrado);
-                listo = true;
+                for (Butaca butaca : peliEncontrada.getSala().getButacas()) {
+                    if(butaca.getDisponibilidad().equals("DISPONIBLE")){
+                        ok2 = true;
+                    }
+                }
+                if (ok2){
+                    generarReserva(peliEncontrada, clienteEncontrado);
+                    listo = true;
+                }
             }
         }
         int flag = 0;

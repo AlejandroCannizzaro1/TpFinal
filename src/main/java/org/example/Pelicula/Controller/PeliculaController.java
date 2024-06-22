@@ -5,6 +5,7 @@ import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Pelicula.Model.Repository.PeliculaRepository;
 import org.example.Pelicula.View.PeliculaView;
 import org.example.Sala.Controller.SalaController;
+import org.example.Sala.Model.Entity.Butaca;
 import org.example.Swing.GestionPeliculasView;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ public class PeliculaController {
 
     //---------------------------------------- CONSTRUCTOR GETTER SETTER -----------------------------------------------//
     public PeliculaController(PeliculaView peliculaView, PeliculaRepository peliculaRepository,
-                              GestionPeliculasView gestionPeliculasView , SalaController salaController) {
+                              GestionPeliculasView gestionPeliculasView, SalaController salaController) {
         this.peliculaView = peliculaView;
         this.peliculaRepository = peliculaRepository;
         this.salaController = salaController;
@@ -54,13 +55,17 @@ public class PeliculaController {
 
     //-------------------------------------------------METODOS----------------------------------------------------------//
 
-    public void cargarPeliculaManual(){
-        peliculaRepository.registrar(peliculaView.crearPelicula());
+    public void cargarPeliculaManual() {
+        Pelicula pelicula = peliculaView.crearPelicula();
+        if (pelicula != null) {
+            peliculaRepository.registrar(pelicula);
+        }
     }
-    public void mostrarListPeliculas(){
 
-            ArrayList <Pelicula> listaPeliculas = this.peliculaRepository.getListaPeliculas();
-        if(!listaPeliculas.isEmpty()){
+    public void mostrarListPeliculas() {
+
+        ArrayList<Pelicula> listaPeliculas = this.peliculaRepository.getListaPeliculas();
+        if (!listaPeliculas.isEmpty()) {
             gestionPeliculasView.mostrarListaPeliculas(this.gestionPeliculasView, listaPeliculas);
         } else {
             JOptionPane.showMessageDialog(null, "Lista de peliculas vacia", "Peliculas", JOptionPane.ERROR_MESSAGE);
@@ -77,32 +82,39 @@ public class PeliculaController {
         }
     }
 
-    public void actualizarPelicula(){
+    public void actualizarPelicula() {
 
         Pelicula peliculaAactualizar = peliculaRepository.consultar(peliculaView.pedirTitulo());
 
-        if ( peliculaAactualizar != null) {
+        if (peliculaAactualizar != null) {
 
             peliculaRepository.actualizar(peliculaAactualizar.getTitulo(), peliculaView.crearPelicula());
             JOptionPane.showMessageDialog(null, "Actualizacion Exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
 
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(null, "Pelicula Inexistente", "Peliculas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void eliminarPelicula(){
+    public void eliminarPelicula() {
         peliculaRepository.eliminar(peliculaView.pedirTitulo());
         JOptionPane.showMessageDialog(null, "Eliminacion de pelicula exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
-    public void mostrarPelisFuturo(Date fecha){
+    public void mostrarPelisFuturo(Date fecha) {
         for (Object pelicula : getPeliculaRepository().getListaPeliculas()) {
             Pelicula pelicula1 = (Pelicula) pelicula;
-            if(pelicula1.getFechasYhoras().getTime() > fecha.getTime()) {
-                gestionPeliculasView.verPelicula(this.gestionPeliculasView, pelicula1);
+            boolean ok = false;
+            if (pelicula1.getFechasYhoras().getTime() > fecha.getTime()) {
+                for (Butaca butaca : pelicula1.getSala().getButacas()) {
+                    if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
+                        ok = true;
+                    }
+                }
+                if(ok){
+                    gestionPeliculasView.verPelicula(this.gestionPeliculasView, pelicula1);
+                }
             }
         }
     }

@@ -22,7 +22,7 @@ public class PeliculaRepository implements Repository<Pelicula> {
     //---------------------------------------- CONSTRUCTOR GETTER SETTER -----------------------------------------------//
 
     public ArrayList<Pelicula> getListaPeliculas() {
-        return listaPeliculas;
+        return this.listaPeliculas;
     }
 
     public void setListaPeliculas(ArrayList<Pelicula> listaPeliculas) {
