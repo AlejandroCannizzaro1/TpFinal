@@ -16,7 +16,9 @@ import org.example.Sala.View.SalaView;
 import org.example.Swing.GestionClientesView;
 import org.example.Swing.GestionPeliculasView;
 import org.example.Swing.GestionReservasView;
+import org.example.Swing.PanelBienvenida;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 
@@ -58,12 +60,22 @@ public class Main {
 
 
         int op = -1;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                PanelBienvenida panelBienvenida = new PanelBienvenida();
+                panelBienvenida.mostrar();
+            }
+        });
         do {
+
+            System.out.println("\n******************************************************************************");
+            System.out.println("***************** Menu Principal *******************");
             System.out.println("1- Menu Cliente");
             System.out.println("2- Menu Pelicula");
             System.out.println("3- Menu Reserva");
             System.out.println("4- Sign out");
-
+            System.out.println("******************************************************************************\n");
 
             System.out.println("Ingrese una opción");
             op = scanner.nextInt(); // Leer la entrada como cadena
@@ -72,13 +84,15 @@ public class Main {
 
                     int op1 = -1;
                     do {
+                        System.out.println("******************************************************************************");
+                        System.out.println("\n***************** Submenu Clientes *******************");
                         System.out.println("1- Mostrar Clientes");
                         System.out.println("2- Cargar Cliente Manual");
                         System.out.println("3- Buscar un Cliente");
                         System.out.println("4- Actualizar un Cliente");
                         System.out.println("5- Eliminar un Cliente");
                         System.out.println("6- Volver atras");
-
+                        System.out.println("******************************************************************************\n");
                         System.out.println("Ingrese una opción");
                         op1 = scanner.nextInt();
                         switch (op1) {
@@ -109,13 +123,15 @@ public class Main {
                 case 2:
                     int op2 = -1;
                     do {
+                        System.out.println("\n******************************************************************************");
+                        System.out.println("***************** Submenu Peliculas *******************");
                         System.out.println("1- Cargar Pelicula Manual");
                         System.out.println("2- Mostrar Peliculas");
                         System.out.println("3- Buscar una Pelicula");
                         System.out.println("4- Actualizar una Pelicula");
                         System.out.println("5- Eliminar una Pelicula");
                         System.out.println("6- Volver atras");
-
+                        System.out.println("******************************************************************************\n");
                         System.out.println("Ingrese una opción");
                         op2 = scanner.nextInt();
                         switch (op2) {
@@ -146,13 +162,16 @@ public class Main {
                 case 3:
                     int op3 = -1;
                     do {
+
+                        System.out.println("\n******************************************************************************");
+                        System.out.println("***************** Submenu Reservas *******************");
                         System.out.println("1- Crear Nueva Reserva");
                         System.out.println("2- Mostrar Reservas Activas");
                         System.out.println("3- Buscar una Reserva");
                         System.out.println("4- Actualizar una Reserva");
                         System.out.println("5- Eliminar una Reserva");
                         System.out.println("6- Volver atras");
-
+                        System.out.println("******************************************************************************\n");
                         System.out.println("Ingrese una opción");
                         op3 = scanner.nextInt();
                         switch (op3) {
