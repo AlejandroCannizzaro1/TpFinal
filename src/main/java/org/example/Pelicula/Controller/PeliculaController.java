@@ -55,13 +55,22 @@ public class PeliculaController {
 
     //-------------------------------------------------METODOS----------------------------------------------------------//
 
+
     public void cargarPeliculaManual() {
+        boolean existe = true;
         Pelicula pelicula = peliculaView.crearPelicula();
-        if (pelicula != null) {
-            peliculaRepository.registrar(pelicula);
+        if(pelicula != null){
+            existe = peliculaRepository.consultarSiExistePeliculaEnList(pelicula.getTitulo());
+            if (!existe){
+
+                this.peliculaRepository.registrar(pelicula);
+                JOptionPane.showMessageDialog(null, "Pelicula cargada a la cartelera con exito", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
+                this.gestionPeliculasView.verPelicula(this.gestionPeliculasView, pelicula);
+            } else {
+                JOptionPane.showMessageDialog(null, "La pelicula ya existe en cartelera", "Peliculas", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
-
     public void mostrarListPeliculas() {
 
         ArrayList<Pelicula> listaPeliculas = this.peliculaRepository.getListaPeliculas();

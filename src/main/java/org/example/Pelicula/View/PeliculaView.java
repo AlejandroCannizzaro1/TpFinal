@@ -67,7 +67,6 @@ public class PeliculaView {
                 Date fecha = new Date(124, (mes - 1), dia, horas, minutos);
                 Pelicula  pelicula = new Pelicula(titulo, genero, duracion, fecha, new Sala());
                 if (pelicula != null){
-                    JOptionPane.showMessageDialog(null, "Pelicula creada con exito", "Menu peliculas", JOptionPane.INFORMATION_MESSAGE);
                     return pelicula;
                 }
             } catch (NumberFormatException e) {

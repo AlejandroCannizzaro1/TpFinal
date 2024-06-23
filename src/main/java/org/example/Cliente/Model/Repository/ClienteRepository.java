@@ -48,6 +48,16 @@ public class ClienteRepository implements Repository <Cliente> {
         return null;
     }
 
+
+    public boolean consultarSiExisteClienteEnLista (String id) {
+        for (Cliente unCliente : this.listaClientes) {
+            if (unCliente.getDni().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void actualizar(String id, Cliente obj) {
         Cliente clienteAactualizar = this.consultar(id);

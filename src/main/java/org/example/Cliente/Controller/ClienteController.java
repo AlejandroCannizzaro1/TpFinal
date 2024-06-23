@@ -44,7 +44,19 @@ public class ClienteController {
     }
 
     public void cargarClienteManual(){
-        clienteRepository.registrar(clienteView.cargarClienteManual(gestionClientesView));
+        boolean existe = true;
+        Cliente cliente = clienteView.cargarClienteManual(gestionClientesView);
+        if(cliente != null){
+            existe = clienteRepository.consultarSiExisteClienteEnLista(cliente.getDni());
+
+            if (!existe){
+                this.clienteRepository.registrar(cliente);
+                this.gestionClientesView.mostrarCliente(this.gestionClientesView, cliente);
+                JOptionPane.showMessageDialog(null, "Cliente cargado con exito", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "El cliente ya existe en la lista", "Clientes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public void mostrarListaClientes(){

@@ -8,6 +8,7 @@ import org.example.Interfaces.Repository;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Validaciones.Validar;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -74,6 +75,16 @@ public class PeliculaRepository implements Repository<Pelicula> {
             }
         }
         return null;
+    }
+
+
+    public boolean consultarSiExistePeliculaEnList (String id) {
+        for (Pelicula pelicula : this.listaPeliculas) {
+            if (pelicula.getTitulo().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
