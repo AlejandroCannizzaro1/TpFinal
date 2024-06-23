@@ -9,6 +9,7 @@ import org.example.Sala.Model.Repository.SalaRepository;
 import org.example.Sala.View.SalaView;
 import org.example.Validaciones.Validar;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 public class SalaController {
@@ -40,21 +41,43 @@ public class SalaController {
         this.salaRepository = salaRepository;
     }
 
+
+    public void verButacaDisponible(Sala sala) {
+        StringBuilder mensaje = new StringBuilder();
+        boolean hayButacasDisponibles = false;  // Variable de control para verificar disponibilidad
+
+        mensaje.append("Disponibilidad de butacas en la sala " + sala.getNumeroSala() + ":\n");
+
+        for (Butaca butaca : sala.getButacas()) {
+            if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
+                hayButacasDisponibles = true;  // Encontramos al menos una butaca disponible
+                mensaje.append("[").append(butaca.getNumero()).append("] ");
+            }
+        }
+
+        if (hayButacasDisponibles) {
+            // Mostrar mensaje con las butacas disponibles
+            JOptionPane.showMessageDialog(null, mensaje.toString(), "Sala " + sala.getNumeroSala(), JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Mostrar mensaje de que no hay butacas disponibles
+            JOptionPane.showMessageDialog(null, "No hay butacas disponibles.", "Sala " + sala.getNumeroSala(), JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     public void elegirButacas(Cliente cliente, Sala sala) {
         int idButaca;
-        char seguir;
+        int option;
         do {
-            salaView.verButacaDisponible(sala);
+            verButacaDisponible(sala);
             if ((idButaca = validarButacas(sala)) != -1) { // me fijo si hay butacas disponibles
                 sala.getButacas().get(idButaca).setDisponibilidad("OCUPADA");
                 sala.getButacas().get(idButaca).setCliente(cliente);
-                System.out.print("\nSi desea reservar otra butaca presione 's': ");
-                seguir = scanner.next().charAt(0);
+                option = JOptionPane.showConfirmDialog(null, "¿Desea reservar otra butaca?", "Continuar", JOptionPane.YES_NO_OPTION);
             } else {
-                System.out.println("no hay mas butacas disponibles...");
-                seguir = 'n';
+                JOptionPane.showMessageDialog(null, "No hay más butacas disponibles...", "Sala " + sala.getNumeroSala(), JOptionPane.INFORMATION_MESSAGE);
+                option = JOptionPane.NO_OPTION;
             }
-        } while (seguir == 's');
+        } while (option == JOptionPane.YES_OPTION);
     }
 
     public int validarButacas(Sala sala) {
@@ -69,10 +92,17 @@ public class SalaController {
         if (flag == 1) {
             while (!ok) {
                 try {
-                    num = validar.validarButacas("Elija butaca a reservar: ", sala.getButacas());
+                    String input = JOptionPane.showInputDialog(null, "Elija butaca a reservar:", "Reservar Butaca", JOptionPane.QUESTION_MESSAGE);
+                    if (input == null) {
+                        throw new Excepciones("La operación fue cancelada...");
+                    }
+                    num = Integer.parseInt(input.trim());
+                    // Aquí podrías llamar a validar.validarButacas si es necesario
                     ok = true;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (Excepciones e) {
-                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {

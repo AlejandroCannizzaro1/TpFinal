@@ -137,14 +137,14 @@ public class ReservaController {
         int flag = 0;
         if(!listo) {
             do {
-                JOptionPane.showMessageDialog(null, "Sala", "Reservas", JOptionPane.INFORMATION_MESSAGE);
                 salaDisponible = salaController.getSalaRepository().consultar(scanner.nextInt());
                 if (salaDisponible != null){
                     flag = 1;
+                    JOptionPane.showMessageDialog(null, "Sala " + salaDisponible.getNumeroSala() + " disponible ", "Reservas", JOptionPane.INFORMATION_MESSAGE);
                     peliEncontrada.setSala(salaDisponible);
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Sala invalida", "Reservas", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Sala No Disponible", "Reservas", JOptionPane.ERROR_MESSAGE);
                 }
             }while(flag == 0);
             generarReserva(peliEncontrada, clienteEncontrado);
@@ -152,7 +152,8 @@ public class ReservaController {
     }
 
     public void generarReserva(Pelicula peliEncontrada, Cliente clienteEncontrado) {
-        System.out.println("Numero de sala: " + peliEncontrada.getSala().getNumeroSala());
+       int numeroSala = peliEncontrada.getSala().getNumeroSala();
+        JOptionPane.showMessageDialog(null, "Numero de sala " + numeroSala , "Reservas", JOptionPane.INFORMATION_MESSAGE);
         salaController.elegirButacas(clienteEncontrado, peliEncontrada.getSala());
 
         Reserva reservaNueva = reservaRepository.crearReserva(clienteEncontrado, peliEncontrada); // instancio la reserva nueva con los datos

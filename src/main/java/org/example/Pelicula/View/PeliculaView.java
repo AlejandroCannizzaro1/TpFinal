@@ -65,7 +65,11 @@ public class PeliculaView {
                 int minutos = Integer.parseInt(minutoField.getText().trim());
 
                 Date fecha = new Date(124, (mes - 1), dia, horas, minutos);
-                return new Pelicula(titulo, genero, duracion, fecha, new Sala());
+                Pelicula  pelicula = new Pelicula(titulo, genero, duracion, fecha, new Sala());
+                if (pelicula != null){
+                    JOptionPane.showMessageDialog(null, "Pelicula creada con exito", "Menu peliculas", JOptionPane.INFORMATION_MESSAGE);
+                    return pelicula;
+                }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Error: Verifica que todos los campos numéricos sean válidos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -147,88 +151,4 @@ public class PeliculaView {
     public String pedirTitulo() {
         return JOptionPane.showInputDialog(null, "Ingrese el Título de la Película buscada:");
     }
-    /*public Pelicula crearPelicula() {
-
-
-        System.out.print("Titulo: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Genero: ");
-        String genero = scanner.nextLine();
-        System.out.print("Duracion: ");
-        int duracion = scanner.nextInt();
-        System.out.print("[Fecha] ");
-        int mes = validarMes();
-        int dia = validarDia(mes);
-        int horas = validarHora();
-        int minuto = validarMinuto();
-        Date fecha = new Date(124, (mes-1), dia, horas, minuto);
-
-        return new Pelicula(titulo, genero, duracion, fecha, new Sala());
-    }
-
-    // --------------------------------------------- VALIDACIONES ------------------------------------------------------//
-    public int validarMes() {
-        int mes = 0;
-        boolean ok = false;
-        while (!ok) {
-            try {
-                mes = validar.mes("Mes (en numero): ");
-                ok = true;
-            } catch (Excepciones e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return mes;
-    }
-
-    public int validarDia(int mes) {
-        int dia = 0;
-        boolean ok = false;
-        while (!ok) {
-            try {
-                dia = validar.dia("Dia (en numero): ", mes);
-                ok = true;
-            } catch (Excepciones e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return dia;
-    }
-
-    public int validarHora(){
-        int hora = 0;
-        boolean ok = false;
-        while(!ok){
-            try{
-                hora = validar.hora("Hora: ");
-                ok = true;
-            } catch (Excepciones e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return hora;
-    }
-
-    public int validarMinuto(){
-        int min = 0;
-        boolean ok = false;
-        while(!ok){
-            try{
-                min = validar.minutos("Minutos: ");
-                ok = true;
-            } catch (Excepciones e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return min;
-    }
-
-    public String pedirTitulo() {
-        System.out.println("Ingrese el Titulo de la Pelicula buscada:");
-       String titulo = scanner.nextLine();
-
-       return titulo;
-    }
-*/
-
 }

@@ -11,21 +11,24 @@ public class SalaView {
 
     public void verButacaDisponible(Sala sala) {
         StringBuilder mensaje = new StringBuilder();
-        mensaje.append("Butacas disponibles:\n");
+        boolean hayButacasDisponibles = false;  // Variable de control para verificar disponibilidad
+
+        mensaje.append("Disponibilidad butacas sala " + sala.getNumeroSala() );
 
         for (Butaca butaca : sala.getButacas()) {
             if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
+                hayButacasDisponibles = true;  // Encontramos al menos una butaca disponible
                 mensaje.append("[").append(butaca.getNumero()).append("] ");
             }
         }
-        JOptionPane.showMessageDialog(null, mensaje.toString(), "Butacas Disponibles", JOptionPane.INFORMATION_MESSAGE);
-    }
-    /*public void verButacaDisponible(Sala sala){
-        System.out.println("Butacas disponibles");
-        for (Butaca butaca : sala.getButacas()) {
-            if(butaca.getDisponibilidad().equals("DISPONIBLE")){
-                System.out.print("[" + butaca.getNumero() + "] ");
-            }
+
+        if (hayButacasDisponibles) {
+            // Mostrar mensaje con las butacas disponibles
+            JOptionPane.showMessageDialog(null, mensaje.toString(), "Sala " + sala.getNumeroSala() , JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Mostrar mensaje de que no hay butacas disponibles
+            JOptionPane.showMessageDialog(null, "No hay butacas disponibles " , "Sala " + sala.getNumeroSala(), JOptionPane.INFORMATION_MESSAGE);
         }
-    } */
+    }
+
 }
