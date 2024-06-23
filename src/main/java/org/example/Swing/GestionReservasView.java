@@ -38,7 +38,20 @@ public class GestionReservasView extends JFrame {
                 .append("<p><strong>Género:</strong> ").append(reserva.getPelicula().getGenero()).append("</p>")
                 .append("<p><strong>Duración:</strong> ").append(reserva.getPelicula().getDuracion()).append(" minutos</p>")
                 .append("<p><strong>Fecha:</strong> ").append(reserva.getPelicula().getFechasYhoras()).append("</p>")
-                .append("</body></html>");
+                .append("<br>")
+                .append("<h3>Sala</h3>")
+                .append("<p><strong>Número de Sala:</strong> ").append(reserva.getPelicula().getSala().getNumeroSala()).append("</p>");
+
+        // Contar las butacas reservadas por el cliente en la película
+        int numButacasReservadas = 0;
+        for (Butaca butaca : reserva.getPelicula().getSala().getButacas()) {
+            if (butaca.getCliente() != null && butaca.getCliente().equals(reserva.getCliente())) {
+                numButacasReservadas++;
+            }
+        }
+        mensaje.append("<p><strong>Cantidad de butacas reservadas:</strong> ").append(numButacasReservadas).append("</p>");
+
+        mensaje.append("</body></html>");
 
         JOptionPane.showMessageDialog(parent, mensaje.toString(), "Detalles de la Reserva", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -54,6 +67,7 @@ public class GestionReservasView extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        // Iterar sobre las reservas del mapa
         for (Map.Entry<Integer, Reserva> entry : reservasMap.entrySet()) {
             Reserva reserva = entry.getValue();
             StringBuilder mensaje = new StringBuilder();

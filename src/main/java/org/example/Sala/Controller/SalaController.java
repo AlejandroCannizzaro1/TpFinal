@@ -1,24 +1,20 @@
 package org.example.Sala.Controller;
 
 import org.example.Cliente.Model.Entity.Cliente;
-import org.example.Cliente.View.ClienteView;
+
 import org.example.Excepciones.Excepciones;
 import org.example.Sala.Model.Entity.Butaca;
 import org.example.Sala.Model.Entity.Sala;
 import org.example.Sala.Model.Repository.SalaRepository;
 import org.example.Sala.View.SalaView;
-import org.example.Validaciones.Validar;
+
 
 import javax.swing.*;
-import java.util.Scanner;
+
 
 public class SalaController {
     private SalaView salaView;
     private SalaRepository salaRepository;
-
-    Scanner scanner = new Scanner(System.in);
-    Validar validar = new Validar();
-    ClienteView clienteView = new ClienteView();
 
     public SalaController(SalaView salaView, SalaRepository salaRepository) {
         this.salaView = salaView;
@@ -80,36 +76,58 @@ public class SalaController {
         } while (option == JOptionPane.YES_OPTION);
     }
 
-    public int validarButacas(Sala sala) {
-        boolean ok = false;
-        int flag = 0;
-        int num = 0;
-        for (Butaca butaca : sala.getButacas()) { // determino si hay butacas disponibles
-            if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
-                flag = 1;
-            }
-        }
-        if (flag == 1) {
-            while (!ok) {
-                try {
-                    String input = JOptionPane.showInputDialog(null, "Elija butaca a reservar:", "Reservar Butaca", JOptionPane.QUESTION_MESSAGE);
-                    if (input == null) {
-                        throw new Excepciones("La operación fue cancelada...");
-                    }
-                    num = Integer.parseInt(input.trim());
-                    // Aquí podrías llamar a validar.validarButacas si es necesario
-                    ok = true;
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Por favor ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                } catch (Excepciones e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } else {
-            return -1;
-        }
-        return num;
-    }
+
+   public int validarButacas(Sala sala) {
+       boolean ok = false;
+       int flag = 0;
+       int num = 0;
+
+       // Determinar si hay butacas disponibles
+       for (Butaca butaca : sala.getButacas()) {
+           if (butaca.getDisponibilidad().equals("DISPONIBLE")) {
+               flag = 1;
+               break; // Si hay al menos una butaca disponible, salir del bucle
+           }
+       }
+
+       if (flag == 1) {
+           while (!ok) {
+               try {
+                   // Solicitar al usuario que elija una butaca
+                   String input = JOptionPane.showInputDialog(null, "Elija butaca a reservar:", "Reservar Butaca", JOptionPane.QUESTION_MESSAGE);
+
+                   // Si el usuario cancela la operación
+                   if (input == null) {
+                       throw new Excepciones("La operación fue cancelada...");
+                   }
+
+                   num = Integer.parseInt(input.trim());
+
+                   // Validar si el número ingresado es válido y la butaca está disponible
+                   if (num >= 0 && num < sala.getButacas().size()) {
+                       if (sala.getButacas().get(num).getDisponibilidad().equals("DISPONIBLE")) {
+                           ok = true;
+                       } else {
+                           JOptionPane.showMessageDialog(null, "Esa butaca está ocupada...", "Error", JOptionPane.ERROR_MESSAGE);
+                           ok = false;
+                       }
+                   } else {
+                       JOptionPane.showMessageDialog(null, "Esa butaca no corresponde a una existente...", "Error", JOptionPane.ERROR_MESSAGE);
+                       ok = false;
+                   }
+               } catch (NumberFormatException e) {
+                   JOptionPane.showMessageDialog(null, "Por favor ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+               } catch (Excepciones e) {
+                   JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+               }
+           }
+       } else {
+           // Si no hay butacas disponibles, retornar -1
+           return -1;
+       }
+
+       return num;
+   }
 
     public void crearSala() {
         Sala sala1 = new Sala(1, "DISPONIBLE");

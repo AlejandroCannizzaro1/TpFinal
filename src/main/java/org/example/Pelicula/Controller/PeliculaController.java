@@ -112,6 +112,7 @@ public class PeliculaController {
     }
 
     public void mostrarPelisFuturo(Date fecha) {
+
         for (Object pelicula : getPeliculaRepository().getListaPeliculas()) {
             Pelicula pelicula1 = (Pelicula) pelicula;
             boolean ok = false;

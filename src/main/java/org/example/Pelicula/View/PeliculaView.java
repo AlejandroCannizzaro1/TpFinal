@@ -11,9 +11,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class PeliculaView {
-    Validar validar = new Validar();
-
-    Scanner scanner = new Scanner(System.in);
     public Pelicula crearPelicula() {
         JTextField tituloField = new JTextField(20);
         JTextField generoField = new JTextField(20);
@@ -65,8 +62,8 @@ public class PeliculaView {
                 int minutos = Integer.parseInt(minutoField.getText().trim());
 
                 Date fecha = new Date(124, (mes - 1), dia, horas, minutos);
-                Pelicula  pelicula = new Pelicula(titulo, genero, duracion, fecha, new Sala());
-                if (pelicula != null){
+                Pelicula pelicula = new Pelicula(titulo, genero, duracion, fecha, new Sala());
+                if (pelicula != null) {
                     return pelicula;
                 }
             } catch (NumberFormatException e) {
@@ -79,19 +76,6 @@ public class PeliculaView {
 
     // Métodos de Validación adaptados a Swing
 
-    public int validarMes() {
-        int mes = 0;
-        boolean ok = false;
-        while (!ok) {
-            try {
-                mes = validar.mes("Mes (en número):");
-                ok = true;
-            } catch (Excepciones e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return mes;
-    }
     private int obtenerDiasEnMes(int mes) {
         switch (mes) {
             case 2:
@@ -105,47 +89,7 @@ public class PeliculaView {
                 return 31;
         }
     }
-    public int validarDia(int mes) {
-        int dia = 0;
-        boolean ok = false;
-        while (!ok) {
-            try {
-                dia = validar.dia("Día (en número):", mes);
-                ok = true;
-            } catch (Excepciones e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return dia;
-    }
 
-    public int validarHora() {
-        int hora = 0;
-        boolean ok = false;
-        while (!ok) {
-            try {
-                hora = validar.hora("Hora:");
-                ok = true;
-            } catch (Excepciones e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return hora;
-    }
-
-    public int validarMinuto() {
-        int min = 0;
-        boolean ok = false;
-        while (!ok) {
-            try {
-                min = validar.minutos("Minutos:");
-                ok = true;
-            } catch (Excepciones e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return min;
-    }
 
     public String pedirTitulo() {
         return JOptionPane.showInputDialog(null, "Ingrese el Título de la Película buscada:");

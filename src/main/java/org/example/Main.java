@@ -168,15 +168,17 @@ public class Main {
                         System.out.println("1- Crear Nueva Reserva");
                         System.out.println("2- Mostrar Reservas Activas");
                         System.out.println("3- Buscar una Reserva");
-                        System.out.println("4- Actualizar una Reserva");
-                        System.out.println("5- Eliminar una Reserva");
-                        System.out.println("6- Volver atras");
+                        System.out.println("4- Volver atras");
                         System.out.println("******************************************************************************\n");
                         System.out.println("Ingrese una opción");
                         op3 = scanner.nextInt();
                         switch (op3) {
                             case 1:
-                                reservaController.generarReserva();
+                                try {
+                                    reservaController.generarReserva();
+                                } catch (Exception e){
+                                    e.getMessage();
+                                }
                                 break;
                             case 2:
                                 reservaController.mostrarReservas();
@@ -185,18 +187,12 @@ public class Main {
                                 reservaController.buscarPorCliente();
                                 break;
                             case 4:
-                                //metodo para actualizar reserva
-                                break;
-                            case 5:
-                                //metodo para eliminar reserva
-                                break;
-                            case 6:
                                 System.out.println("Volviendo al Menú Principal...");
                                 break;
                             default:
                                 System.out.println("Opción no válida. Por favor, ingrese una opción válida.");
                         }
-                    } while (op3 != 6);
+                    } while (op3 != 4);
                     break;
 
                 case 4:
@@ -211,21 +207,4 @@ public class Main {
 }
 
 
-
-/*
-        salaController.crearSala();
-
-
-
-        clienteRepository.loadClientes();
-        peliculaRepository.loadPeliculas();
-        reservaController.loadSalas();
-        reservaRepository.loadReservas();
-
-
-        System.out.print("Ingrese DNI del cliente para ver sus reservas: ");
-        reservaController.buscarPorCliente(clienteRepository.consultar(scanner.nextLine()));
-
-        //reservaController.generarReserva();
-        /*reservaController.mostrarReservas();*/
 

@@ -16,7 +16,7 @@ public class PanelBienvenida extends JFrame {
 
         // Crear el panel de bienvenida
         JPanel bienvenidaPanel = new JPanel(new BorderLayout());
-        bienvenidaPanel.setBackground(new Color(60, 63, 65));
+        bienvenidaPanel.setBackground(new Color(39, 58, 89));
 
         JLabel label = new JLabel("Bienvenido al Cine Trivium ACG", SwingConstants.CENTER);
         label.setFont(new Font("Serif", Font.BOLD, 32));

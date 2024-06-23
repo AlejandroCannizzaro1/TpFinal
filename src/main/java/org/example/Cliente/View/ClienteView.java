@@ -2,10 +2,10 @@ package org.example.Cliente.View;
 
 import org.example.Cliente.Model.Entity.Cliente;
 import org.example.Excepciones.Excepciones;
-import org.example.Validaciones.Validar;
+
 
 import javax.swing.*;
-import java.util.Scanner;
+
 public class ClienteView {
 public void mensaje1() {
     JOptionPane.showMessageDialog(null, "El Cliente buscado no existe!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -105,70 +105,6 @@ private void mostrarError(JFrame parent, String mensaje) {
     JOptionPane.showMessageDialog(parent, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 }
 }
-// Ejemplo de uso en un entorno Swing
-
-/*
-    public String validarNombreYapellido() {
-        boolean ok = false;
-        String nombre = "";
-        while (!ok) {
-            try {
-                nombre = JOptionPane.showInputDialog(parent, "Ingrese el Nombre y Apellido:");
-                if (nombre == null || nombre.trim().isEmpty()) {
-                    throw new Excepciones("El Nombre y Apellido no puede estar vacío.");
-                } else if (!nombre.matches("[a-zA-Z]+(\\s[a-zA-Z]+)*")){
-                    throw new Excepciones("Ingrese solo letras...");
-                }
-                ok = true;
-            } catch (Excepciones excepciones) {
-                JOptionPane.showMessageDialog(parent, excepciones.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return nombre;
-    }
-
-    public int validarEdad() {
-        boolean ok = false;
-        int edad = 0;
-        while (!ok) {
-            try {
-                String edadStr = JOptionPane.showInputDialog(parent, "Ingrese la Edad del Cliente:");
-                if (edadStr == null || edadStr.trim().isEmpty()) {
-                    throw new Excepciones("La edad no puede estar vacía.");
-                }
-                edad = Integer.parseInt(edadStr);
-                if (edad <= 0) {
-                    throw new Excepciones("La edad debe ser un número positivo.");
-                }
-                ok = true;
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(parent, "Debe ingresar un número.", "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (Excepciones excepciones) {
-                JOptionPane.showMessageDialog(parent, excepciones.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return edad;
-    }
-
-    public String validarDni() {
-        boolean ok = false;
-        String dni = "";
-        while (!ok) {
-            try {
-                dni = JOptionPane.showInputDialog(parent, "Ingrese el DNI del Cliente:");
-                if (dni == null || dni.trim().isEmpty()) {
-                    throw new Excepciones("El DNI no puede estar vacío.");
-                }        if (!dni.matches("\\d+")){
-                    throw new Excepciones("Ingrese solo números...");
-                }
-                ok = true;
-            } catch (Excepciones excepciones) {
-                JOptionPane.showMessageDialog(parent, excepciones.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return dni;
-    }
- */
 
 
 

@@ -39,9 +39,7 @@ public class ClienteController {
         this.clienteView = clienteView;
     }
 
-    public void cargarCliente(Cliente unCliente){
-        clienteRepository.registrar(unCliente);
-    }
+
 
     public void cargarClienteManual(){
         boolean existe = true;
@@ -86,6 +84,7 @@ public class ClienteController {
 
         String dni = clienteView.pedirDniCliente(gestionClientesView);
         clienteRepository.eliminar(dni);
+        JOptionPane.showMessageDialog(null, "Cliente eliminado con exito", "Clientes", JOptionPane.INFORMATION_MESSAGE);
 
         clienteRepository.saveClientes();
 
