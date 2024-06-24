@@ -87,28 +87,33 @@ public class PeliculaController {
             JOptionPane.showMessageDialog(null, "Pelicula Valida", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
             gestionPeliculasView.verPelicula(this.gestionPeliculasView, unaPelicula);
         } else {
-            JOptionPane.showMessageDialog(null, "La pelicula no existe", "Peliculas", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La pelicula no existe en cartelera", "Peliculas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void actualizarPelicula() {
 
         Pelicula peliculaAactualizar = peliculaRepository.consultar(peliculaView.pedirTitulo());
-
+        boolean exito;
         if (peliculaAactualizar != null) {
-
-            peliculaRepository.actualizar(peliculaAactualizar.getTitulo(), peliculaView.crearPelicula());
-            JOptionPane.showMessageDialog(null, "Actualizacion Exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
-
+            exito =  peliculaRepository.actualizar(peliculaAactualizar.getTitulo(), peliculaView.crearPelicula());
+            if(exito) {
+                JOptionPane.showMessageDialog(null, "Actualizacion Exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar pelicula", "Peliculas", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Pelicula Inexistente", "Peliculas", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La pelicula que desea actualizar no existe", "Peliculas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void eliminarPelicula() {
-        peliculaRepository.eliminar(peliculaView.pedirTitulo());
-        JOptionPane.showMessageDialog(null, "Eliminacion de pelicula exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
-
+        boolean elimino = peliculaRepository.eliminar(peliculaView.pedirTitulo());
+        if(elimino) {
+            JOptionPane.showMessageDialog(null, "Eliminacion de pelicula exitosa", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "La pelicula no existe en cartelera", "Peliculas", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public void mostrarPelisFuturo(Date fecha) {

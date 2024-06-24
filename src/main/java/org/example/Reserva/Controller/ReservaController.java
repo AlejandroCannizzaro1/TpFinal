@@ -33,7 +33,6 @@ public class ReservaController {
     GestionClientesView gestionClientesView;
 
 
-
     public ReservaController(ReservaView reservaView, ReservaRepository reservaRepository, ClienteController clienteController,
                              PeliculaController peliculaController, SalaController salaController,
                              GestionClientesView gestionClientesView, GestionPeliculasView gestionPeliculasView,
@@ -85,34 +84,40 @@ public class ReservaController {
 
     public void generarReserva() {
         String dni = clienteController.getClienteView().validarDni(gestionClientesView);
-        Cliente clienteEncontrado = buscarOCrearCliente(dni);
+        Cliente clienteEncontrado = this.clienteRepository.consultar(dni);
 
-        Date fechaHoy = new Date();
-        JOptionPane.showMessageDialog(null, "Mostrando películas en cartelera", "Reservas", JOptionPane.INFORMATION_MESSAGE);
-        peliculaController.mostrarPelisFuturo(fechaHoy);
+        if (clienteEncontrado != null) {
+            JOptionPane.showMessageDialog(null, "Cliente valido", "Reservas", JOptionPane.INFORMATION_MESSAGE);
+            Date fechaHoy = new Date();
+            JOptionPane.showMessageDialog(null, "Mostrando películas en cartelera", "Reservas", JOptionPane.INFORMATION_MESSAGE);
+            peliculaController.mostrarPelisFuturo(fechaHoy);
 
-        Pelicula peliEncontrada = buscarPelicula();
+            Pelicula peliEncontrada = buscarPelicula();
 
-        if (peliEncontrada == null) {
-            return; // Si no se encontró la película, salimos del método
-        }
+            if (peliEncontrada == null) {
+                return; // Si no se encontró la película, salimos del método
+            }
 
-        boolean listo = false;
+            boolean listo = false;
 
-        for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
-            if (entry.getValue().getPelicula().getTitulo().equals(peliEncontrada.getTitulo())) {
-                if (hayButacasDisponibles(peliEncontrada)) {
-                    generarReserva(peliEncontrada, clienteEncontrado);
-                    listo = true;
-                    break;
+            for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
+                if (entry.getValue().getPelicula().getTitulo().equals(peliEncontrada.getTitulo())) {
+                    if (hayButacasDisponibles(peliEncontrada)) {
+                        generarReserva(peliEncontrada, clienteEncontrado);
+                        listo = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        if (!listo) {
-            seleccionarSalaYGenerarReserva(peliEncontrada, clienteEncontrado);
+            if (!listo) {
+                seleccionarSalaYGenerarReserva(peliEncontrada, clienteEncontrado);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "El cliente no existe en la lista", "Reservas", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
 
     private Cliente buscarOCrearCliente(String dni) {
         Cliente clienteEncontrado = clienteController.getClienteRepository().consultar(dni);
@@ -145,10 +150,13 @@ public class ReservaController {
 
         if (tituloPelicula != null) {
             peliEncontrada = peliculaController.getPeliculaRepository().consultar(tituloPelicula);
-            JOptionPane.showMessageDialog(null, "Pelicula existente en cartelera", "Reservas", JOptionPane.INFORMATION_MESSAGE);
-            gestionPeliculasView.verPelicula(gestionPeliculasView, peliEncontrada);
+            if(peliEncontrada != null) {
+                JOptionPane.showMessageDialog(null, "Pelicula existente en cartelera", "Reservas", JOptionPane.INFORMATION_MESSAGE);
+                gestionPeliculasView.verPelicula(gestionPeliculasView, peliEncontrada);
+            } else {
+                JOptionPane.showMessageDialog(null, "La pelicula no existe en cartelera", "Reservas", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-
         return peliEncontrada;
     }
 
@@ -210,19 +218,25 @@ public class ReservaController {
     public void buscarPorCliente() {
         String id = this.clienteView.pedirDniCliente(gestionClientesView);
         Cliente cliente = this.clienteRepository.consultar(id);
+        boolean exito = false;
         if (cliente != null) {
+            JOptionPane.showMessageDialog(null, "Cliente valido", "Reservas", JOptionPane.INFORMATION_MESSAGE);
             if (!this.reservaRepository.getReservaMap().isEmpty()) {
                 for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
                     Reserva reserva = entry.getValue();
                     if (reserva.getCliente().getDni().equals(cliente.getDni())) {
                         gestionReservasView.verReserva(entry.getValue(), gestionReservasView);
+                        exito = true;
                     }
+                }
+                if(!exito){
+                    JOptionPane.showMessageDialog(null, "El cliente no registra reservas", "Reservas", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No hay reservas registradas", "Reservas", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Cliente == null", "Clientes", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El cliente no existe en la lista", "Clientes", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

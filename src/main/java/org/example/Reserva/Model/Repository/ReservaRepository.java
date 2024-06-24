@@ -6,6 +6,7 @@ import org.example.Cliente.Model.Entity.Cliente;
 import org.example.Pelicula.Model.Entity.Pelicula;
 import org.example.Reserva.Model.Entity.Reserva;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -57,7 +58,7 @@ public class ReservaRepository {
     public void agregarReserva(Integer key, Reserva reserva) {
         reservaMap.put(key, reserva);
         saveReservas();
-        System.out.println("RESERVADO CON EXITO!!!");
+        JOptionPane.showMessageDialog(null, "Reserva realizada con exito", "Reservas", JOptionPane.INFORMATION_MESSAGE);
     }
     public int gestLastIdReserva (){
         Integer lastId = 0 ;
@@ -79,4 +80,6 @@ public class ReservaRepository {
         System.out.println(id);
         return new Reserva(id, cliente, pelicula);
     }
+
+
 }

@@ -92,6 +92,6 @@ public class PeliculaView {
 
 
     public String pedirTitulo() {
-        return JOptionPane.showInputDialog(null, "Ingrese el Título de la Película buscada:");
+        return JOptionPane.showInputDialog(null, "Ingrese el Título de la Película buscada");
     }
 }

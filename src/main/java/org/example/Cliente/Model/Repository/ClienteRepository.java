@@ -49,7 +49,7 @@ public class ClienteRepository implements Repository <Cliente> {
     }
 
 
-    public boolean consultarSiExisteClienteEnLista (String id) {
+    public boolean  consultarSiExisteClienteEnLista (String id) {
         for (Cliente unCliente : this.listaClientes) {
             if (unCliente.getDni().equals(id)) {
                 return true;
@@ -59,26 +59,26 @@ public class ClienteRepository implements Repository <Cliente> {
     }
 
     @Override
-    public void actualizar(String id, Cliente obj) {
+    public synchronized  boolean actualizar(String id, Cliente obj) {
         Cliente clienteAactualizar = this.consultar(id);
-
+        boolean exito = false;
         if (clienteAactualizar != null) {
             this.listaClientes.remove(clienteAactualizar);
             this.listaClientes.add(obj);
-        } else {
-            clienteView.mensaje1();
+            exito = true;
         }
+        return exito;
     }
 
     @Override
-    public void eliminar(String id) {
+    public synchronized  boolean  eliminar(String id) {
         Cliente clienteAeliminar = this.consultar(id);
-
+        boolean elimino = false;
         if (clienteAeliminar != null) {
             this.listaClientes.remove(clienteAeliminar);
-        } else {
-            clienteView.mensaje1();
+            elimino = true;
         }
+        return elimino;
     }
 
     public void loadClientes() {

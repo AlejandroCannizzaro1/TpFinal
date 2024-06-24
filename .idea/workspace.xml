@@ -5,23 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="086bc98c-06f8-4f97-8168-0561d39fa3a6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Swing/CineMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente/Controller/ClienteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente/Controller/ClienteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente/View/ClienteView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente/View/ClienteView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Cliente/Model/Repository/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Cliente/Model/Repository/ClienteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Interfaces/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Interfaces/Repository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Pelicula/Controller/PeliculaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Pelicula/Controller/PeliculaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Pelicula/Model/Repository/PeliculaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Pelicula/Model/Repository/PeliculaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Pelicula/View/PeliculaView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Pelicula/View/PeliculaView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Reserva/Controller/ReservaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Reserva/Controller/ReservaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Reserva/View/ReservaView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Reserva/View/ReservaView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Sala/Controller/SalaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Sala/Controller/SalaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Sala/Model/Repository/SalaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Sala/Model/Repository/SalaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Sala/View/SalaView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Sala/View/SalaView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Reserva/Model/Repository/ReservaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Reserva/Model/Repository/ReservaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Swing/GestionReservasView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Swing/GestionReservasView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Swing/PanelBienvenida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Swing/PanelBienvenida.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Validaciones/Validar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Validaciones/Validar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Swing/PanelBienvenida.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/clientes.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/clientes.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/peliculas.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/peliculas.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/reservas.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/reservas.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

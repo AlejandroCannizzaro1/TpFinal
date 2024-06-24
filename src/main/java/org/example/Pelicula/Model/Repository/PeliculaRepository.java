@@ -86,20 +86,26 @@ public class PeliculaRepository implements Repository<Pelicula> {
     }
 
     @Override
-    public void actualizar(String id, Pelicula obj) {
+    public synchronized boolean actualizar(String id, Pelicula obj) {
         Pelicula peliculaAactualizar = this.consultar(id);
-
+        boolean exito = false;
         if (peliculaAactualizar != null) {
             this.listaPeliculas.remove(peliculaAactualizar);
             this.listaPeliculas.add(obj);
+            exito = true;
         }
+        return exito;
     }
 
     @Override
-    public void eliminar(String id) {
+    public synchronized  boolean eliminar(String id) {
         Pelicula peliculaAeliminar = this.consultar(id);
-        this.listaPeliculas.remove(peliculaAeliminar);
+        boolean elimino = false;
+        if(peliculaAeliminar != null) {
+            elimino = this.listaPeliculas.remove(peliculaAeliminar);
+        }
         savePeliculas();
+        return elimino;
     }
 
     public String validarPelicula() {

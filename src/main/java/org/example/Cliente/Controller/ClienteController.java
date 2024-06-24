@@ -83,21 +83,39 @@ public class ClienteController {
     public void eliminarCliente(){
 
         String dni = clienteView.pedirDniCliente(gestionClientesView);
-        clienteRepository.eliminar(dni);
-        JOptionPane.showMessageDialog(null, "Cliente eliminado con exito", "Clientes", JOptionPane.INFORMATION_MESSAGE);
-
+        boolean elimino = clienteRepository.eliminar(dni);
+        if(elimino) {
+            JOptionPane.showMessageDialog(null, "Cliente eliminado con exito", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "El cliente no existe en la lista", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+        }
         clienteRepository.saveClientes();
 
     }
+
+
 
     public void actualizarCliente(){
-
+        boolean exito = false;
         String dni = clienteView.pedirDniCliente(gestionClientesView);
-        Cliente clienteActualizado = clienteView.cargarClienteManual(gestionClientesView);
-        clienteRepository.actualizar(dni, clienteActualizado);
 
+        if (dni != null && !dni.isEmpty()) {
+            Cliente cliente = clienteRepository.consultar(dni);
+            if (cliente != null) {
+                JOptionPane.showMessageDialog(null, "Cliente valido, actualice los campos del cliente", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+                Cliente clienteActualizado = clienteView.cargarClienteManual(gestionClientesView);
+                exito = clienteRepository.actualizar(dni, clienteActualizado);
+                if(exito) {
+                    JOptionPane.showMessageDialog(null, "Cliente actualizado con exito", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar cliente", "Clientes", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El cliente no existe en la lista", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "El formato ingresado no es valido", "Clientes", JOptionPane.INFORMATION_MESSAGE);
+        }
         clienteRepository.saveClientes();
     }
-
-
 }
