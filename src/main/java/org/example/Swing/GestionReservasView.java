@@ -1,19 +1,11 @@
 package org.example.Swing;
-
 import org.example.Sala.Model.Entity.Butaca;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Map;
-//      SwingUtilities.invokeLater(() -> new JFrameConFondo()); En el main va esto o donde se instancie esta
-// clase
+
 import org.example.Reserva.Model.Entity.Reserva;
 public class GestionReservasView extends JFrame {
-    private JPanel panelFondo;
-    private ImageIcon imagenFondo;
 
     public GestionReservasView() {
         setTitle("Gestión de Clientes");
@@ -35,17 +27,15 @@ public class GestionReservasView extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        // Crear un StringBuilder para construir el mensaje HTML de todas las reservas
+        StringBuilder mensaje = new StringBuilder();
+        mensaje.append("<html><body style='padding: 10px;'>");
+
         // Iterar sobre las reservas del mapa
         for (Map.Entry<Integer, Reserva> entry : reservasMap.entrySet()) {
             Reserva reserva = entry.getValue();
 
-            // Llamar al método verReserva para mostrar los detalles de la reserva
-            verReserva(reserva, parent);
-
-            // Crear un mensaje HTML con los detalles de la reserva
-            StringBuilder mensaje = new StringBuilder();
-            mensaje.append("<html><body style='padding: 10px;'>")
-                    .append("<h2>Detalles de la Reserva</h2>")
+            mensaje.append("<h2>Detalles de la Reserva</h2>")
                     .append("<p><strong>Cliente:</strong> ").append(reserva.getCliente().getNombreYapellido()).append("</p>")
                     .append("<p><strong>DNI Cliente:</strong> ").append(reserva.getCliente().getDni()).append("</p>")
                     .append("<p><strong>Edad Cliente:</strong> ").append(reserva.getCliente().getEdad()).append("</p>")
@@ -66,15 +56,15 @@ public class GestionReservasView extends JFrame {
                     numButacasReservadas++;
                 }
             }
-            mensaje.append("<p><strong>Cantidad de butacas reservadas:</strong> ").append(numButacasReservadas).append("</p>");
-
-            mensaje.append("</body></html>");
-
-            JLabel label = new JLabel(mensaje.toString());
-            label.setVerticalAlignment(SwingConstants.TOP);
-            panel.add(label);
-            panel.add(Box.createVerticalStrut(10)); // Espacio entre cada reserva
+            mensaje.append("<p><strong>Cantidad de butacas reservadas:</strong> ").append(numButacasReservadas).append("</p>")
+                    .append("<hr>"); // Línea separadora entre cada reserva
         }
+
+        mensaje.append("</body></html>");
+
+        JLabel label = new JLabel(mensaje.toString());
+        label.setVerticalAlignment(SwingConstants.TOP);
+        panel.add(label);
 
         // Crear un JScrollPane para hacer scroll en el contenido
         JScrollPane scrollPane = new JScrollPane(panel);

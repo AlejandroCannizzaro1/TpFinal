@@ -119,19 +119,6 @@ public class ReservaController {
     }
 
 
-    private Cliente buscarOCrearCliente(String dni) {
-        Cliente clienteEncontrado = clienteController.getClienteRepository().consultar(dni);
-
-        if (clienteEncontrado == null) {
-            String nombre = clienteController.getClienteView().validarNombreYapellido(gestionClientesView);
-            int edad = clienteController.getClienteView().validarEdad(gestionClientesView);
-            clienteEncontrado = new Cliente(dni, nombre, edad);
-            clienteController.getClienteRepository().registrar(clienteEncontrado);
-        }
-
-        gestionClientesView.mostrarCliente(gestionClientesView, clienteEncontrado);
-        return clienteEncontrado;
-    }
 
     public void loadSalas() {
         for (Map.Entry<Integer, Reserva> entryMap : reservaRepository.getReservaMap().entrySet()) {
@@ -209,9 +196,7 @@ public class ReservaController {
         if (reservaRepository.getReservaMap().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay reservas registradas", "Reservas", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            for (Map.Entry<Integer, Reserva> entry : reservaRepository.getReservaMap().entrySet()) {
-                gestionReservasView.verReserva(entry.getValue(), gestionReservasView);
-            }
+            gestionReservasView.verReservas(this.reservaRepository.getReservaMap(), this.gestionReservasView);
         }
     }
 
